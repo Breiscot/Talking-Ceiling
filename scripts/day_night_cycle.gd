@@ -106,7 +106,26 @@ func _update_environment():
 	if current_time > 0.75:
 		var night_factor = (current_time - 0.75) / 0.25
 		env.ambient_light_energy = lerp(0.5, 0.1, night_factor)
+	else:
+		env.ambient_light_energy = 0.5
+		
+func sleep():
+	if not can_sleep:
+		return
+		
+	GameManager.is_paused = true
 	
+	# Fade e transizione
+	await get_tree().create_timer(2.0).timeout
 	
+	GameManager.is_paused = false
+	GameManager.advance_to_next_day()
 	
+func _on_new_day(_day: int):
+	current_time = 0.0
+	is_night = false
+	can_sleep = false
+	day_has_ended = false
 	
+func _force_end_day():
+	sleep()
