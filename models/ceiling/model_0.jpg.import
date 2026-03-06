@@ -2,20 +2,20 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dq3tuf6s1ak2s"
-path.s3tc="res://.godot/imported/model_2.jpg-24861166f4496e2f03654ead78013da8.s3tc.ctex"
+uid="uid://d0gles430k4kh"
+path.s3tc="res://.godot/imported/model_0.jpg-c8c5879ed80bdd9328018dd3efb766bd.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
 }
 generator_parameters={
-"md5": "4d24f22da878ac2b938c0a7a2b9ef1f1"
+"md5": "d3d170eb842097c29273eff442b2f631"
 }
 
 [deps]
 
-source_file="res://models/model_2.jpg"
-dest_files=["res://.godot/imported/model_2.jpg-24861166f4496e2f03654ead78013da8.s3tc.ctex"]
+source_file="res://models/ceiling/model_0.jpg"
+dest_files=["res://.godot/imported/model_0.jpg-c8c5879ed80bdd9328018dd3efb766bd.s3tc.ctex"]
 
 [params]
 
@@ -25,12 +25,12 @@ compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1
-compress/normal_map=1
+compress/normal_map=0
 compress/channel_pack=0
 mipmaps/generate=true
 mipmaps/limit=-1
-roughness/mode=1
-roughness/src_normal="res://models/model_2.jpg"
+roughness/mode=0
+roughness/src_normal=""
 process/channel_remap/red=0
 process/channel_remap/green=1
 process/channel_remap/blue=2
