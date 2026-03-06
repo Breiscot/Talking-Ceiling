@@ -5,6 +5,7 @@
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_dovo2"]
 
 [node name="Player" type="CharacterBody3D"]
+script = ExtResource("1_8afob")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 shape = SubResource("CapsuleShape3D_dovo2")
@@ -18,6 +19,3 @@ shape = SubResource("CapsuleShape3D_dovo2")
 [node name="FootstepParticles" type="GPUParticles3D" parent="."]
 
 [node name="FootstepAudio" type="AudioStreamPlayer3D" parent="."]
-
-[node name="Node3D" type="Node3D" parent="."]
-script = ExtResource("1_8afob")
