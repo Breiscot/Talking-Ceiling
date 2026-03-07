@@ -1,0 +1,27 @@
+[gd_scene load_steps=4 format=3 uid="uid://dl5s4ywmas6k1"]
+
+[ext_resource type="Script" uid="uid://c2fe54ldt38c3" path="res://scripts/camp.gd" id="1_wk8fr"]
+[ext_resource type="PackedScene" uid="uid://cet13gba1awy2" path="res://models/tent/tent.glb" id="2_nfbfs"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_nfbfs"]
+size = Vector3(3, 3, 3)
+
+[node name="Camp" type="Node3D"]
+script = ExtResource("1_wk8fr")
+
+[node name="TentModel" parent="." instance=ExtResource("2_nfbfs")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.45955455, 0)
+
+[node name="CampfireLight" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.8610508, 0, 1.5)
+light_color = Color(1, 0.7019608, 0.047058824, 1)
+light_energy = 2.0
+omni_range = 8.0
+
+[node name="FireParticles" type="GPUParticles3D" parent="."]
+
+[node name="InteractionArea" type="Area3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="InteractionArea"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.71845055, 0)
+shape = SubResource("BoxShape3D_nfbfs")

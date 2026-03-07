@@ -1,10 +1,10 @@
-extends Node3D
+extends Node
 
 # Impostazioni
 @export var interaction_range: float = 3.0
 
-@onready var ray_cast: RayCast3D = $CameraPivot/Camera3D/InteractionRay
-@onready var inventory: Node = $""
+@onready var ray_cast: RayCast3D = $"../CameraPivot/Camera3D/InteractionRay"
+@onready var inventory: Node = $"../PlayerInventory"
 
 # UI
 @export var prompt_label: Label

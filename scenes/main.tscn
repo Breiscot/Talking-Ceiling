@@ -1,3 +1,113 @@
-[gd_scene format=3 uid="uid://dbgx2vpd3v1qg"]
+[gd_scene load_steps=12 format=3 uid="uid://dbgx2vpd3v1qg"]
 
-[node name="Node3D" type="Node3D"]
+[ext_resource type="PackedScene" uid="uid://c1atfbw4u8fuv" path="res://scenes/map/map.tscn" id="1_0wfyh"]
+[ext_resource type="Script" uid="uid://bp6jah5fqpe0i" path="res://scripts/main.gd" id="1_85g3d"]
+[ext_resource type="PackedScene" uid="uid://dd5yqvopb16np" path="res://scenes/player/player.tscn" id="2_sugp2"]
+[ext_resource type="Script" uid="uid://cdnmyj5gdq33n" path="res://scripts/day_night_cycle.gd" id="3_sugp2"]
+[ext_resource type="PackedScene" uid="uid://bbymaakt1t2m1" path="res://scenes/ceiling.tscn" id="4_jyhfs"]
+[ext_resource type="PackedScene" uid="uid://dl5s4ywmas6k1" path="res://scenes/camp.tscn" id="5_tbgi4"]
+[ext_resource type="Script" uid="uid://c12qgyu1hi1le" path="res://scripts/resource_spawner.gd" id="6_tefeu"]
+[ext_resource type="Script" uid="uid://v7ubnfdi2f2e" path="res://scripts/aggressive_seal_spawner.gd" id="7_o6xl0"]
+[ext_resource type="PackedScene" uid="uid://cncj6juuyd35u" path="res://scenes/enemy/aggressive_seal.tscn" id="8_tipki"]
+
+[sub_resource type="Environment" id="Environment_0wfyh"]
+background_mode = 1
+background_color = Color(0.5568628, 0.78431374, 0.9098039, 1)
+ambient_light_color = Color(1, 1, 1, 1)
+ambient_light_energy = 0.5
+
+[sub_resource type="NavigationMesh" id="NavigationMesh_sugp2"]
+vertices = PackedVector3Array(-49.5, 0.5, -49.5, -49.5, 0.5, 49.5, 49.5, 0.5, 49.5, 49.5, 0.5, -49.5)
+polygons = [PackedInt32Array(3, 2, 0), PackedInt32Array(0, 2, 1)]
+agent_height = 1.0
+
+[node name="Main" type="Node3D"]
+script = ExtResource("1_85g3d")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_0wfyh")
+
+[node name="Sun" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.8660254, 0.35355338, -0.35355338, 0, 0.70710677, 0.70710677, 0.5, -0.6123724, 0.6123724, 0, 0, 0)
+shadow_enabled = true
+
+[node name="DayNightCycle" type="Node" parent="." groups=["day_night"]]
+script = ExtResource("3_sugp2")
+
+[node name="NavigationRegion3D" type="NavigationRegion3D" parent="."]
+navigation_mesh = SubResource("NavigationMesh_sugp2")
+
+[node name="Map" parent="NavigationRegion3D" instance=ExtResource("1_0wfyh")]
+
+[node name="Player" parent="." instance=ExtResource("2_sugp2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5341269, 0)
+
+[node name="Ceiling" parent="." instance=ExtResource("4_jyhfs")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.49075526, -4.684515)
+
+[node name="Camp" parent="." instance=ExtResource("5_tbgi4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.0951447, 0.13916278, 0)
+
+[node name="ResourceSpawner" type="Node3D" parent="."]
+script = ExtResource("6_tefeu")
+
+[node name="SP1" type="Marker3D" parent="ResourceSpawner"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, -8.729515)
+
+[node name="SP2" type="Marker3D" parent="ResourceSpawner"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.440202, 0.5, -4.0477295)
+
+[node name="SP3" type="Marker3D" parent="ResourceSpawner"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.4514966, 0.5, 7.257413)
+
+[node name="SP4" type="Marker3D" parent="ResourceSpawner"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.1481433, 0.5, 3.1196337)
+
+[node name="SP5" type="Marker3D" parent="ResourceSpawner"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 14.401972)
+
+[node name="SP6" type="Marker3D" parent="ResourceSpawner"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14.0368, 0.5, 4.384864)
+
+[node name="SP7" type="Marker3D" parent="ResourceSpawner"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13.325098, 0.5, -15.781696)
+
+[node name="SP8" type="Marker3D" parent="ResourceSpawner"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -16.260117, 0.5, -0.86519337)
+
+[node name="SP9" type="Marker3D" parent="ResourceSpawner"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13.834986, 0.5, 7.825734)
+
+[node name="SP10" type="Marker3D" parent="ResourceSpawner"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11.597423, 0.5, -15.5748625)
+
+[node name="SP11" type="Marker3D" parent="ResourceSpawner"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.9813194, 0.5, 10.8499155)
+
+[node name="SP12" type="Marker3D" parent="ResourceSpawner"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.2289, 0.5, 19.905235)
+
+[node name="SP13" type="Marker3D" parent="ResourceSpawner"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12.537385, 0.5, -5.2559514)
+
+[node name="SP14" type="Marker3D" parent="ResourceSpawner"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.8297873, 0.5, -15.631298)
+
+[node name="SP15" type="Marker3D" parent="ResourceSpawner"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.781458, 0.5, -20.60515)
+
+[node name="AggressiveSealSpawner" type="Node3D" parent="."]
+script = ExtResource("7_o6xl0")
+aggressive_seal_scene = ExtResource("8_tipki")
+
+[node name="AttackSP1" type="Marker3D" parent="AggressiveSealSpawner"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14.066, 0.5, 20)
+
+[node name="AttackSP2" type="Marker3D" parent="AggressiveSealSpawner"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.737, 0.5, 20)
+
+[node name="AttackSP3" type="Marker3D" parent="AggressiveSealSpawner"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12.433, 0.5, -20)
+
+[node name="AttackSP4" type="Marker3D" parent="AggressiveSealSpawner"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15.812, 0.5, -20)

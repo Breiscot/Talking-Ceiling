@@ -1,4 +1,4 @@
-extends Node3D
+extends Node
 
 # Segnali
 signal night_started

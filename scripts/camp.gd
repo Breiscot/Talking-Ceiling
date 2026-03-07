@@ -3,7 +3,6 @@ extends Node3D
 @onready var interaction_area: Area3D = $InteractionArea
 @onready var campfire_light: OmniLight3D = $CampfireLight
 @onready var fire_particles: GPUParticles3D = $FireParticles
-@onready var fire_audio: AudioStreamPlayer3D = $FireAudio
 
 # Impostazioni
 @export var warmth_radius: float = 5.0
@@ -34,7 +33,7 @@ func get_interaction_text() -> String:
 	else:
 		return "Puoi dormire solo di notte"
 		
-func interact(player_interaction):
+func interact(_player_interaction):
 	if not day_night_cycle:
 		day_night_cycle = get_tree().get_first_node_in_group("day_night")
 		

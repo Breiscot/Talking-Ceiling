@@ -1,7 +1,29 @@
-[gd_scene load_steps=2 format=3 uid="uid://bbymaakt1t2m1"]
+[gd_scene load_steps=5 format=3 uid="uid://bbymaakt1t2m1"]
 
 [ext_resource type="PackedScene" uid="uid://cj8m7tgdid5aj" path="res://models/ceiling/model.glb" id="1_ji6l1"]
+[ext_resource type="Script" uid="uid://3luh264urfic" path="res://scripts/seal_needs.gd" id="2_gl8kw"]
 
-[node name="Ceiling" type="Node3D"]
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_ji6l1"]
+radius = 0.4
+height = 0.8
 
-[node name="model" parent="." instance=ExtResource("1_ji6l1")]
+[sub_resource type="SphereShape3D" id="SphereShape3D_gl8kw"]
+radius = 2.0
+
+[node name="Ceiling" type="CharacterBody3D"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, -0.10619104, 0)
+shape = SubResource("CapsuleShape3D_ji6l1")
+
+[node name="SealBody" parent="." instance=ExtResource("1_ji6l1")]
+
+[node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
+
+[node name="SealNeeds" type="Node" parent="."]
+script = ExtResource("2_gl8kw")
+
+[node name="InteractionArea" type="Area3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="InteractionArea"]
+shape = SubResource("SphereShape3D_gl8kw")

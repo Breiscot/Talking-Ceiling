@@ -1,0 +1,16 @@
+[gd_scene load_steps=4 format=3 uid="uid://ccfl71x1sc4pn"]
+
+[ext_resource type="Script" uid="uid://dadtm17wvuhk3" path="res://scripts/collectible.gd" id="1_7lms8"]
+[ext_resource type="PackedScene" uid="uid://b7l4tmr4chu0p" path="res://models/water/water_bottle.glb" id="2_7lms8"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_ir0s1"]
+
+[node name="WaterCollectible" type="Area3D"]
+script = ExtResource("1_7lms8")
+type = 1
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("SphereShape3D_ir0s1")
+
+[node name="Sketchfab_Scene" parent="." instance=ExtResource("2_7lms8")]
+transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 1.13248825e-05, -0.13054225, -0.0163327)
