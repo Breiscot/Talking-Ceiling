@@ -4,15 +4,17 @@
 [ext_resource type="PackedScene" uid="uid://cj8m7tgdid5aj" path="res://models/ceiling/model.glb" id="2_s58as"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_a4lgu"]
-height = 1.0
+radius = 2.0
+height = 4.0
 
 [node name="AggressiveSeal" type="CharacterBody3D"]
 script = ExtResource("1_a4lgu")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.106, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4375341, 0.8230119)
 shape = SubResource("CapsuleShape3D_a4lgu")
 
 [node name="SealBody" parent="." instance=ExtResource("2_s58as")]
+transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, 0, 1.1897781, 0)
 
 [node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]

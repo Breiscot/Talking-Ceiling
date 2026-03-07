@@ -4,13 +4,13 @@
 [ext_resource type="PackedScene" uid="uid://cet13gba1awy2" path="res://models/tent/tent.glb" id="2_nfbfs"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_nfbfs"]
-size = Vector3(3, 3, 3)
+size = Vector3(5, 3, 5)
 
 [node name="Camp" type="Node3D"]
 script = ExtResource("1_wk8fr")
 
 [node name="TentModel" parent="." instance=ExtResource("2_nfbfs")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.45955455, 0)
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0.45955455, 0)
 
 [node name="CampfireLight" type="OmniLight3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.8610508, 0, 1.5)

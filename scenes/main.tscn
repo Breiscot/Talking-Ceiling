@@ -46,7 +46,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5341269, 0)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.49075526, -4.684515)
 
 [node name="Camp" parent="." instance=ExtResource("5_tbgi4")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.0951447, 0.13916278, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.0951447, 0.7750894, 0)
 
 [node name="ResourceSpawner" type="Node3D" parent="."]
 script = ExtResource("6_tefeu")
