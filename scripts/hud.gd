@@ -9,8 +9,8 @@ extends Control
 @onready var hunger_label: Label = $NeedsPanel/VBoxContainer/HungerLabel
 @onready var thirst_label: Label = $NeedsPanel/VBoxContainer/ThirstLabel
 
-@onready var fish_label: Label = $InventoryPanel/HBoxContainer/FishLabel
-@onready var water_label: Label = $InventoryPanel/HBoxContainer/WaterLabel
+@onready var fish_label: Label = $InventoryPanel/VBoxContainer/FishLabel
+@onready var water_label: Label = $InventoryPanel/VBoxContainer/WaterLabel
 
 @onready var warning_panel: PanelContainer = $WarningPanel
 @onready var warning_label: Label = $WarningPanel/WarningLabel

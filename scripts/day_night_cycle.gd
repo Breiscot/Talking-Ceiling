@@ -129,3 +129,21 @@ func _on_new_day(_day: int):
 	
 func _force_end_day():
 	sleep()
+	
+func get_time_string() -> String:
+	var total_hours = current_time * 24.0
+	var hours = int(total_hours) % 24
+	var minutes = int(fmod(total_hours * 60.0, 60.0))
+	return "%02d:%02d" % [hours, minutes]
+	
+func get_phase_name() -> String:
+	if current_time < 0.15:
+		return "Dawn"
+	elif current_time < 0.4:
+		return "Morning"
+	elif current_time < 0.6:
+		return "Afternoon"
+	elif current_time < 0.75:
+		return "Evening"
+	else:
+		return "Night"

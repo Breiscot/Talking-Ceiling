@@ -1,7 +1,6 @@
 extends CharacterBody3D
 
 @export var seal_needs: Node # SealNeeds
-@onready var animation_player: AnimationPlayer = $AnimationPlayer
 @onready var nav_agent: NavigationAgent3D = $NavigationAgent3D
 @onready var happy_particles: GPUParticles3D = $HappyParticles
 @onready var sad_particles: GPUParticles3D = $SadParticles
@@ -30,7 +29,7 @@ var is_waiting: bool = true
 var interaction_area: Area3D
 
 func _ready():
-	GameManager.ceiling = self
+	GameManager.seal = self
 	GameManager.seal_needs = seal_needs
 	
 	# Connette segnali della foca
@@ -77,7 +76,7 @@ func _process_wandering(_delta):
 		return
 		
 	var next_pos = nav_agent.get_next_path_position()
-	var direction = (next_pos - global_position).normalized
+	var direction = (next_pos - global_position).normalized()
 	direction.y = 0
 	
 	velocity.x = direction.x * move_speed
@@ -106,7 +105,7 @@ func _pick_next_wander_point():
 		)
 		nav_agent.target_position = global_position + random_offset
 		
-func _on_fed(type: String):
+func _on_fed(_type: String):
 	current_state = SealState.HAPPY
 	
 	if happy_particles:
