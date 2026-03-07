@@ -12,6 +12,9 @@ var water_bottles: int = 0
 @export var max_fish: int = 10
 @export var max_water: int = 10
 
+func _ready():
+	add_to_group("player_inventory")
+
 func add_fish(amount: int = 1) -> bool:
 	if fish >= max_fish:
 		inventory_full.emit("fish")

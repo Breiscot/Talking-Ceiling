@@ -12,9 +12,6 @@ enum CollectibleType { FISH, WATER }
 
 # Effetti
 @export var collect_sound: AudioStream
-@onready var mesh: MeshInstance3D = $MeshInstance3D
-@onready var audio_player: AudioStreamPlayer3D = $AudioPlayer
-@onready var particles: GPUParticles3D = $CollectParticles
 
 var start_position: Vector3
 var is_collected: bool = false
@@ -36,8 +33,6 @@ func _process(delta):
 	rotate_y(deg_to_rad(rotate_speed * delta))
 	
 func _setup_visual():
-	if not mesh:
-		return
 		
 	var material = StandardMaterial3D.new()
 	
@@ -54,8 +49,6 @@ func _setup_visual():
 			material.emission_energy_multiplier = 0.5
 			material.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
 			material.albedo_color.a = 0.8
-			
-	mesh.material_override = material
 	
 func _on_body_entered(body):
 	if is_collected:
@@ -79,16 +72,6 @@ func _on_body_entered(body):
 			
 func _collect():
 	is_collected = true
-	
-	if audio_player and collect_sound:
-		audio_player.stream = collect_sound
-		audio_player.play()
-		
-	if particles:
-		particles.emitting = true
-		
-	if mesh:
-		mesh.visible = false
 		
 	# Disabilità collisione
 	set_deferred("monitoring", false)

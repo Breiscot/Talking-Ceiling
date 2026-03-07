@@ -1,8 +1,7 @@
 extends Node3D
 
 @onready var interaction_area: Area3D = $InteractionArea
-@onready var campfire_light: OmniLight3D = $CampfireLight
-@onready var fire_particles: GPUParticles3D = $FireParticles
+@onready var campfire_light: OmniLight3D = $CampfireModel/CampfireLight
 
 # Impostazioni
 @export var warmth_radius: float = 5.0

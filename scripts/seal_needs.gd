@@ -50,6 +50,10 @@ func _process(delta):
 	hunger = clamp(hunger, 0.0, max_hunger)
 	thirst = clamp(thirst, 0.0, max_thirst)
 	
+	# Debug
+	if Engine.get_frames_drawn() % 120 == 0:
+		print("Hunger: %.1f | Thirst: %.1f | Difficulty: %.2f" % [hunger, thirst, difficulty_multiplier])
+	
 	# Emetti segnali aggiornamento
 	hunger_changed.emit(hunger)
 	thirst_changed.emit(thirst)

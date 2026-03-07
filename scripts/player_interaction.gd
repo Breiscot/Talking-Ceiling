@@ -46,7 +46,7 @@ func _check_interactables():
 			
 func _do_interact():
 	if current_interactable and current_interactable.has_method("interact"):
-		current_interactable.interact(self)
+		current_interactable.interact(inventory)
 		
 func _show_prompt(text: String):
 	if prompt_label:

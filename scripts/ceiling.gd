@@ -28,6 +28,9 @@ var is_waiting: bool = true
 # Interazione
 var interaction_area: Area3D
 
+var fish_restore: float = 30.0
+var water_restore: float = 35.0
+
 func _ready():
 	GameManager.seal = self
 	GameManager.seal_needs = seal_needs
@@ -137,3 +140,29 @@ func _on_safe():
 	if sad_particles:
 		sad_particles.emitting = false
 	current_state = SealState.IDLE
+	
+func get_interaction_text() -> String:
+	return "Feed the seal"
+	
+func interact(inventory):
+	if not seal_needs:
+		return
+		
+	if seal_needs.hunger <= seal_needs.thirst:
+		if inventory.use_fish():
+			seal_needs.feed(fish_restore)
+			_on_fed("food")
+			return
+		elif inventory.use_water():
+			seal_needs.give_water(water_restore)
+			_on_fed("water")
+			return
+	else:
+		if inventory.use_water():
+			seal_needs.give_water(water_restore)
+			_on_fed("water")
+			return
+		elif inventory.use_fish():
+			seal_needs.feed(fish_restore)
+			_on_fed("food")
+			return

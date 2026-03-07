@@ -1,10 +1,14 @@
-[gd_scene load_steps=5 format=3 uid="uid://dl5s4ywmas6k1"]
+[gd_scene load_steps=7 format=3 uid="uid://dl5s4ywmas6k1"]
 
 [ext_resource type="Script" uid="uid://c2fe54ldt38c3" path="res://scripts/camp.gd" id="1_wk8fr"]
 [ext_resource type="PackedScene" uid="uid://cet13gba1awy2" path="res://models/tent/tent.glb" id="2_nfbfs"]
+[ext_resource type="PackedScene" uid="uid://dypqfu2cr8plf" path="res://models/campfire/campfire.glb" id="3_c5nam"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_c5nam"]
 size = Vector3(2.8755798, 1.4672852, 2.7719727)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_nsjlq"]
+size = Vector3(1.9372559, 1.5393982, 1.9741211)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_nfbfs"]
 size = Vector3(7, 5, 7)
@@ -21,14 +25,20 @@ transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0.45955455, 0)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.003189087, 0.23364258, 0.053466797)
 shape = SubResource("BoxShape3D_c5nam")
 
-[node name="CampfireLight" type="OmniLight3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.894681, 0, 3.3156562)
+[node name="CampfireModel" parent="." instance=ExtResource("3_c5nam")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.8120155, -0.13442749, 3.2555773)
+
+[node name="CampfireLight" type="OmniLight3D" parent="CampfireModel"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.08266544, -0.17375815, -0.036057234)
 light_color = Color(1, 0.7019608, 0.047058824, 1)
 light_energy = 2.0
 omni_range = 8.0
 
-[node name="FireParticles" type="GPUParticles3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.927953, 0, 3.3085032)
+[node name="StaticBody3D" type="StaticBody3D" parent="CampfireModel"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CampfireModel/StaticBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.05041504, -0.047150433, -0.050048828)
+shape = SubResource("BoxShape3D_nsjlq")
 
 [node name="InteractionArea" type="Area3D" parent="."]
 

@@ -4,6 +4,7 @@ extends Node
 signal night_started
 signal day_ended
 signal time_updated(normalized_time: float)
+signal time_changed(time: float)
 
 # Impostazioni
 @export var day_duration_seconds: float = 300.0 # 5 minuti
@@ -61,6 +62,8 @@ func _process(delta):
 		day_has_ended = true
 		day_ended.emit()
 		_force_end_day()
+		
+		time_changed.emit(current_time)
 		
 func _update_sun():
 	if not sun_light:
