@@ -1,13 +1,3 @@
-[gd_scene load_steps=3 format=3 uid="uid://boe7cc71d8eel"]
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_e6lj2"]
-albedo_color = Color(0.050510764, 0.050510757, 0.050510757, 1)
-
-[sub_resource type="PlaneMesh" id="PlaneMesh_c7s6e"]
-material = SubResource("StandardMaterial3D_e6lj2")
-size = Vector2(200, 200)
-
-[node name="Map" type="Node3D"]
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
-mesh = SubResource("PlaneMesh_c7s6e")
+version https://git-lfs.github.com/spec/v1
+oid sha256:a7d9f4083b6e0d0973bf3fbea4d9706eb7515c1d149f22255fc50efc4d4ad086
+size 458

@@ -9,8 +9,8 @@ extends Control
 @onready var hunger_label: Label = $NeedsPanel/VBoxContainer/HungerLabel
 @onready var thirst_label: Label = $NeedsPanel/VBoxContainer/ThirstLabel
 
-@onready var fish_label: Label = $InventoryPanel/VBoxContainer/FishLabel
-@onready var water_label: Label = $InventoryPanel/VBoxContainer/WaterLabel
+@onready var fish_label: Label = $InventoryPanel/HBoxContainer/PanelContainer/FishLabel
+@onready var water_label: Label = $InventoryPanel/HBoxContainer/PanelContainer2/WaterLabel
 
 @onready var warning_panel: PanelContainer = $WarningPanel
 @onready var warning_label: Label = $WarningPanel/WarningLabel
@@ -74,14 +74,14 @@ func _on_hunger_changed(value: float):
 		hunger_bar.value = value
 		hunger_bar.modulate = _get_bar_color(value / 100.0)
 	if hunger_label:
-		hunger_label.text = "Hunger: %.0f%%" % value
+		hunger_label.text = "Hunger of the ceiling:"
 		
 func _on_thirst_changed(value: float):
 	if thirst_bar:
 		thirst_bar.value = value
 		thirst_bar.modulate = _get_bar_color(value / 100.0)
 	if thirst_label:
-		thirst_label.text = "Thirst: %.0f%%" % value
+		thirst_label.text = "Thirst of the ceiling:"
 		
 func _on_inventory_changed(fish: int, water: int):
 	if fish_label:

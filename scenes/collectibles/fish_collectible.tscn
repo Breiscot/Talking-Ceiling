@@ -1,16 +1,3 @@
-[gd_scene load_steps=4 format=3 uid="uid://c2hvn0q63lx3m"]
-
-[ext_resource type="Script" uid="uid://dadtm17wvuhk3" path="res://scripts/collectible.gd" id="1_lrati"]
-[ext_resource type="PackedScene" uid="uid://csutukrilyoql" path="res://models/fish/fish.glb" id="2_ir0s1"]
-
-[sub_resource type="SphereShape3D" id="SphereShape3D_ir0s1"]
-
-[node name="FishCollectible" type="Area3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
-script = ExtResource("1_lrati")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-shape = SubResource("SphereShape3D_ir0s1")
-
-[node name="Sketchfab_Scene" parent="." instance=ExtResource("2_ir0s1")]
-transform = Transform3D(0.06, 0, 0, 0, 0.06, 0, 0, 0, 0.06, 0.16568196, 0.82015574, -1.5650849)
+version https://git-lfs.github.com/spec/v1
+oid sha256:f82a6906601b6bb53b5bd286eb3f413306f12d26a68207b4da33e78084197a89
+size 752

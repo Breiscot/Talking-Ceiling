@@ -65,7 +65,7 @@ func _process_chasing(_delta):
 	
 	if not nav_agent.is_navigation_finished():
 		var next_pos = nav_agent.get_next_path_position()
-		var direction = (next_pos - global_position).normalized
+		var direction = (next_pos - global_position).normalized()
 		direction.y = 0
 		
 		velocity.x = direction.x * move_speed
