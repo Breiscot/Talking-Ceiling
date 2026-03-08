@@ -2,38 +2,33 @@ extends CharacterBody3D
 
 @export var seal_needs: Node # SealNeeds
 @onready var nav_agent: NavigationAgent3D = $NavigationAgent3D
-@onready var happy_particles: GPUParticles3D = $HappyParticles
-@onready var sad_particles: GPUParticles3D = $SadParticles
 @onready var seal_audio: AudioStreamPlayer3D = $AudioPlayer
 
 # Suoni
-@export var happy_sound: AudioStream
-@export var sad_sound: AudioStream
-@export var idle_sound: AudioStream
+@export var bark_sound: AudioStream
 
 # Wandering
-@export var wander_points: Array[Marker3D] = []
 @export var move_speed: float = 2.0
 @export var wait_time_min: float = 2.0
 @export var wait_time_max: float = 5.0
-@export var wander_radius: float = 8.0
+
+@export var home_position: Vector3 = Vector3(3, 0, 3)
+@export var wander_radius: float = 6.0
 
 # Stato
-enum SealState { IDLE, WANDERING, HAPPY, SAD }
+enum SealState { IDLE, WANDERING, HAPPY, SAD, TALKING }
 var current_state: SealState = SealState.IDLE
-var current_wander_index: int = 0
 var wait_timer: float = 0.0
-var is_waiting: bool = true
 
-# Interazione
-var interaction_area: Area3D
-
+# Nutrizione
 var fish_restore: float = 30.0
 var water_restore: float = 35.0
 
 func _ready():
 	GameManager.seal = self
 	GameManager.seal_needs = seal_needs
+	
+	home_position = global_position
 	
 	# Connette segnali della foca
 	if seal_needs:
@@ -43,32 +38,32 @@ func _ready():
 		seal_needs.seal_fed.connect(_on_fed)
 		
 	wait_timer = randf_range(wait_time_min, wait_time_max)
-	current_state = SealState.IDLE
 	
 func _physics_process(delta):
 	if GameManager.is_game_over:
 		return
+		
+	if not is_on_floor():
+		velocity.y -= 9.8 * delta
 		
 	match current_state:
 		SealState.IDLE:
 			_process_idle(delta)
 		SealState.WANDERING:
 			_process_wandering(delta)
-		SealState.HAPPY:
-			_process_happy(delta)
-		SealState.SAD:
-			_process_sad(delta)
+		SealState.HAPPY, SealState.TALKING, SealState.SAD:
+			velocity.x = 0
+			velocity.z = 0
 			
-	# Gravità
-	if not is_on_floor():
-		velocity.y -= 9.8 * delta
-		
+	_enforce_boundary()
 	move_and_slide()
 	
 func _process_idle(delta):
+	velocity.x = 0
+	velocity.z = 0
 	wait_timer -= delta
 	if wait_timer <= 0:
-		_pick_next_wander_point()
+		_pick_random_point_in_zone()
 		current_state = SealState.WANDERING
 		
 func _process_wandering(_delta):
@@ -89,60 +84,30 @@ func _process_wandering(_delta):
 	if direction.length() > 0.1:
 		var target_rotation = atan2(direction.x, direction.z)
 		rotation.y = lerp_angle(rotation.y, target_rotation, 0.1)
-		
-func _process_happy(_delta):
-	print("happy")
 	
-func _process_sad(_delta):
-	print("sad")
+func _pick_random_point_in_zone():
+	var angle = randf() * TAU
+	var distance = randf() * wander_radius
+	var target_pos = home_position + Vector3(
+		cos(angle) * distance,
+		0,
+		sin(angle) * distance
+	)
+	nav_agent.target_position = target_pos
 	
-func _pick_next_wander_point():
-	if wander_points.size() > 0:
-		current_wander_index = (current_wander_index + 1) % wander_points.size()
-		nav_agent.target_position = wander_points[current_wander_index].global_position
-	else:
-		var random_offset = Vector3(
-			randf_range(-wander_radius, wander_radius),
-			0,
-			randf_range(-wander_radius, wander_radius)
-		)
-		nav_agent.target_position = global_position + random_offset
-		
-func _on_fed(_type: String):
-	current_state = SealState.HAPPY
+func _enforce_boundary():
+	var dist_from_home = Vector3(global_position.x, 0, global_position.z).distance_to(
+		Vector3(home_position.x, 0, home_position.z)
+	)
 	
-	if happy_particles:
-		happy_particles.emitting = true
+	if dist_from_home > wander_radius:
+		var dir_to_home = (home_position - global_position).normalized()
+		dir_to_home.y = 0
+		velocity.x = dir_to_home.x * move_speed * 2
+		velocity.z = dir_to_home.z * move_speed * 2
 		
-	if seal_audio and happy_sound:
-		seal_audio.stream = happy_sound
-		seal_audio.play()
-		
-	# Torna a idle dopo un pò
-	await get_tree().create_timer(2.0).timeout
-	if not seal_needs.is_in_danger:
-		current_state = SealState.IDLE
-		
-func _on_danger():
-	current_state = SealState.SAD
-	
-	if sad_particles:
-		sad_particles.emitting = true
-		
-	if seal_audio and sad_sound:
-		seal_audio.stream = sad_sound
-		seal_audio.play()
-		
-func _on_critical():
-	current_state = SealState.SAD
-	
-func _on_safe():
-	if sad_particles:
-		sad_particles.emitting = false
-	current_state = SealState.IDLE
-	
 func get_interaction_text() -> String:
-	return "Feed the seal"
+	return "[E] Feed | [F] Talk"
 	
 func interact(inventory):
 	if not seal_needs:
@@ -166,3 +131,30 @@ func interact(inventory):
 			seal_needs.feed(fish_restore)
 			_on_fed("food")
 			return
+			
+func talk():
+	current_state = SealState.TALKING
+	
+	if seal_audio and bark_sound:
+		seal_audio.stream = bark_sound
+		seal_audio.play()
+		
+	await get_tree().create_timer(2.0).timeout
+	if current_state == SealState.TALKING:
+		current_state = SealState.IDLE
+		
+func _on_fed(_type: String):
+	current_state = SealState.HAPPY
+
+	await get_tree().create_timer(2.0).timeout
+	if not seal_needs.is_in_danger:
+		current_state = SealState.IDLE
+		
+func _on_danger():
+	current_state = SealState.SAD
+		
+func _on_critical():
+	current_state = SealState.SAD
+	
+func _on_safe():
+	current_state = SealState.IDLE
