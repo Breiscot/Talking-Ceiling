@@ -15,16 +15,20 @@ enum CollectibleType { FISH, WATER }
 
 var start_position: Vector3
 var is_collected: bool = false
+var is_ready: bool = false
+var spawn_protection: bool = true
 
 func _ready():
-	start_position = global_position
-	
 	body_entered.connect(_on_body_entered)
-	
 	_setup_visual()
 	
+	await get_tree().create_timer(0.5).timeout
+	start_position = global_position
+	is_ready = true
+	spawn_protection = false
+	
 func _process(delta):
-	if is_collected:
+	if is_collected or not is_ready:
 		return
 		
 	var new_y = start_position.y + sin(Time.get_ticks_msec() / 1000.0 * bob_speed) * bob_height
@@ -33,6 +37,9 @@ func _process(delta):
 	rotate_y(deg_to_rad(rotate_speed * delta))
 	
 func _setup_visual():
+	var mesh = get_node_or_null("MeshInstance3D")
+	if not mesh:
+		return
 		
 	var material = StandardMaterial3D.new()
 	
@@ -49,9 +56,11 @@ func _setup_visual():
 			material.emission_energy_multiplier = 0.5
 			material.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
 			material.albedo_color.a = 0.8
+			
+	mesh.material_override = material
 	
 func _on_body_entered(body):
-	if is_collected:
+	if is_collected or spawn_protection:
 		return
 		
 	if body.is_in_group("player") or body.name == "Player":
@@ -72,25 +81,27 @@ func _on_body_entered(body):
 			
 func _collect():
 	is_collected = true
+	
+	var mesh = get_node_or_null("MeshInstance3D")
+	if mesh:
+		mesh.visible = false
 		
 	# Disabilità collisione
 	set_deferred("monitoring", false)
 	
-	await get_tree().create_timer(1.0).timeout
 	queue_free()
 	
 # Interazione
 func get_interaction_text() -> String:
 	match type:
 		CollectibleType.FISH:
-			return "Raccogli pesce"
+			return "Collect fish"
 		CollectibleType.WATER:
-			return "Raccogli acqua"
-	return "Raccogli"
+			return "Collect water"
+	return "Collect"
 	
-func interact(player_interaction):
-	var inventory = player_interaction.get_inventory()
-	if not inventory:
+func interact(inventory):
+	if is_collected:
 		return
 		
 	var collected = false
