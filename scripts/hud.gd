@@ -8,7 +8,7 @@ extends Control
 @onready var water_label: Label = $InventoryPanel/HBoxContainer/PanelContainer2/WaterLabel
 @onready var warning_panel: PanelContainer = $WarningPanel
 @onready var warning_label: Label = $WarningPanel/WarningLabel
-@onready var interaction_label: Label = $InteractionPrompt
+@onready var interaction_label: Label = $PanelContainer/InteractionPrompt
 @onready var satisfaction_bar: ProgressBar = $SatisfactionPanel/VBoxContainer/SatisfactionBar
 @onready var satisfaction_label: Label = $SatisfactionPanel/VBoxContainer/SatisfactionLabel
 

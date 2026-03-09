@@ -1,7 +1,7 @@
 extends Node3D
 
 @export var seal_scene: PackedScene
-@export var spawn_distance: float = 15.0
+@export var spawn_distance: float = 60.0
 @export var seal_count: int = 12
 
 var spawned = []
@@ -35,6 +35,6 @@ func _on_spawn():
 		get_tree().current_scene.call_deferred("add_child", seal)
 		spawned.append(seal)
 		
-	await get_tree().create_timer(3.0).timeout
+	await get_tree().create_timer(15.0).timeout
 	if not GameManager.is_game_over:
 		GameManager.trigger_game_over()
