@@ -36,7 +36,9 @@ func _process(delta):
 	satisfaction = clamp(satisfaction, 0.0, max_satisfaction)
 	satisfaction_changed.emit(satisfaction)
 	
-	if satisfaction >= max_satisfaction:
+	if satisfaction >= 99.5:
+		satisfaction = max_satisfaction
+		satisfaction_changed.emit(satisfaction)
 		win_game()
 		
 func add_satisfaction(type: String):
@@ -50,6 +52,9 @@ func add_satisfaction(type: String):
 		
 	satisfaction = clamp(satisfaction, 0.0, max_satisfaction)
 	satisfaction_changed.emit(satisfaction)
+	
+	if satisfaction >= max_satisfaction:
+		win_game()
 		
 func trigger_aggressive_seals():
 	if is_game_over:
