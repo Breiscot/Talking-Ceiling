@@ -3,8 +3,8 @@ extends Node3D
 # Scene
 @export var fish_scene: PackedScene
 @export var water_scene: PackedScene
-@export var fish_per_day: int = 5
-@export var water_per_day: int = 4
+@export var fish_per_day: int = 8
+@export var water_per_day: int = 6
 
 var spawned = []
 	
@@ -30,9 +30,6 @@ var spawn_positions = [
 	Vector3(25, 0.5, 8),
 	Vector3(-20, 0.5, -3),
 ]
-	
-func _ready():
-	GameManager.day_started.connect(_on_new_day)
 	
 func _on_new_day(day: int):
 	print("Spawning resources per day %d..." % day)
