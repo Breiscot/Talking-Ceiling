@@ -4,15 +4,16 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://il2tbssjvgcm"
 path.s3tc="res://.godot/imported/Sun.png-1d820e5e95d6e006f732a34f23ffd69e.s3tc.ctex"
+path.etc2="res://.godot/imported/Sun.png-1d820e5e95d6e006f732a34f23ffd69e.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://addons/DayNightCycle/Textures/Sun.png"
-dest_files=["res://.godot/imported/Sun.png-1d820e5e95d6e006f732a34f23ffd69e.s3tc.ctex"]
+dest_files=["res://.godot/imported/Sun.png-1d820e5e95d6e006f732a34f23ffd69e.s3tc.ctex", "res://.godot/imported/Sun.png-1d820e5e95d6e006f732a34f23ffd69e.etc2.ctex"]
 
 [params]
 

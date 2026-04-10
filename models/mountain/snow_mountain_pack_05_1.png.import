@@ -4,8 +4,9 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://b76wdsmdk5gx5"
 path.s3tc="res://.godot/imported/snow_mountain_pack_05_1.png-bfd10ba51e26721db31c666c9366f498.s3tc.ctex"
+path.etc2="res://.godot/imported/snow_mountain_pack_05_1.png-bfd10ba51e26721db31c666c9366f498.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 generator_parameters={
@@ -15,7 +16,7 @@ generator_parameters={
 [deps]
 
 source_file="res://models/mountain/snow_mountain_pack_05_1.png"
-dest_files=["res://.godot/imported/snow_mountain_pack_05_1.png-bfd10ba51e26721db31c666c9366f498.s3tc.ctex"]
+dest_files=["res://.godot/imported/snow_mountain_pack_05_1.png-bfd10ba51e26721db31c666c9366f498.s3tc.ctex", "res://.godot/imported/snow_mountain_pack_05_1.png-bfd10ba51e26721db31c666c9366f498.etc2.ctex"]
 
 [params]
 

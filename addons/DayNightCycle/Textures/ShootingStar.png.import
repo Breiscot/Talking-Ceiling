@@ -4,15 +4,16 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://0utj447pdpm7"
 path.s3tc="res://.godot/imported/ShootingStar.png-04ca17821873edd42be771b1705016b8.s3tc.ctex"
+path.etc2="res://.godot/imported/ShootingStar.png-04ca17821873edd42be771b1705016b8.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://addons/DayNightCycle/Textures/ShootingStar.png"
-dest_files=["res://.godot/imported/ShootingStar.png-04ca17821873edd42be771b1705016b8.s3tc.ctex"]
+dest_files=["res://.godot/imported/ShootingStar.png-04ca17821873edd42be771b1705016b8.s3tc.ctex", "res://.godot/imported/ShootingStar.png-04ca17821873edd42be771b1705016b8.etc2.ctex"]
 
 [params]
 

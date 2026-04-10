@@ -4,15 +4,16 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://c40s2yh4i8y7f"
 path.s3tc="res://.godot/imported/Moon.png-39c87d9999fec598d2a7a1c5b864eee9.s3tc.ctex"
+path.etc2="res://.godot/imported/Moon.png-39c87d9999fec598d2a7a1c5b864eee9.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://addons/DayNightCycle/Textures/Moon.png"
-dest_files=["res://.godot/imported/Moon.png-39c87d9999fec598d2a7a1c5b864eee9.s3tc.ctex"]
+dest_files=["res://.godot/imported/Moon.png-39c87d9999fec598d2a7a1c5b864eee9.s3tc.ctex", "res://.godot/imported/Moon.png-39c87d9999fec598d2a7a1c5b864eee9.etc2.ctex"]
 
 [params]
 

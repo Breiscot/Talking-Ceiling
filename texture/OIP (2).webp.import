@@ -4,15 +4,16 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://dhq47k5jxl7u2"
 path.s3tc="res://.godot/imported/OIP (2).webp-2e4d9c0f9adbf2b3b2b45eec28515aa8.s3tc.ctex"
+path.etc2="res://.godot/imported/OIP (2).webp-2e4d9c0f9adbf2b3b2b45eec28515aa8.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://texture/OIP (2).webp"
-dest_files=["res://.godot/imported/OIP (2).webp-2e4d9c0f9adbf2b3b2b45eec28515aa8.s3tc.ctex"]
+dest_files=["res://.godot/imported/OIP (2).webp-2e4d9c0f9adbf2b3b2b45eec28515aa8.s3tc.ctex", "res://.godot/imported/OIP (2).webp-2e4d9c0f9adbf2b3b2b45eec28515aa8.etc2.ctex"]
 
 [params]
 
