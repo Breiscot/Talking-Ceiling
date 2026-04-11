@@ -44,9 +44,10 @@ func _setup_desktop():
 	
 # Switch con F11 VR/Desktop
 func _input(event):
-	if event.is_action_pressed("ui_fullscreen"):	#F11
-		if VRManager.is_vr_available:
-			if VRManager.is_vr_mode:
-				_setup_desktop()
-			else:
-				_setup_vr()
+	if event is InputEventKey and event.pressed:
+		if event.keycode == KEY_F11:
+			if VRManager.is_vr_available:
+				if VRManager.is_vr_mode:
+					_setup_desktop()
+				else:
+					_setup_vr()
