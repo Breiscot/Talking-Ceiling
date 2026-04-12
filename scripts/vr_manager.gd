@@ -18,18 +18,32 @@ func _check_vr():
 		print("VR not finded, mode desktop")
 		
 func enable_vr() -> bool:
-	if not is_vr_available:
-		print("VR is not available")
+	if not xr_interface:
+		xr_interface = XRServer.find_interface("OpenXR")
+		
+	if not xr_interface:
+		print("Open XR not found.")
 		return false
 		
-	if xr_interface.initialize():
-		is_vr_mode = true
-		get_viewport().use_xr = true
-		print("VR is ON")
-		return true
-	else:
-		print("Impossible initializing VR")
-		return false
+	if not xr_interface.is_initialized():
+		if not xr_interface.initialize():
+			print("Impossible initializing VR")
+			return false
+			
+	is_vr_mode = true
+	is_vr_available = true
+	
+	# Configura viewport VR
+	var vp = get_viewport()
+	vp.use_xr = true
+	vp.scaling_3d_mode = Viewport.SCALING_3D_MODE_BILINEAR
+	vp.scaling_3d_scale = 1.0
+	
+	# Disabilita VSync
+	DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_DISABLED)
+	
+	print("VR is ON")
+	return true
 		
 func disable_vr():
 	if xr_interface and is_vr_mode:

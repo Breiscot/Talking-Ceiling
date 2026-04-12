@@ -18,14 +18,25 @@ func _ready():
 	
 func _setup_vr():
 	if VRManager.enable_vr():
+		# Disabilita Desktop
+		desktop_player = get_node_or_null("Player")
+		if desktop_player:
+			desktop_player.visible = false
+			desktop_player.set_process(false)
+			desktop_player.set_physics_process(false)
+			
+			var desktop_cam = desktop_player.get_node_or_null("CameraPivot/Camera3D")
+			if desktop_cam:
+				desktop_cam.current = false
+				
 		# Attiva VR
+		var xr_cam = get_node_or_null("XROrigin3D/XRCamera3D")
+		if xr_cam:
+			xr_cam.current = true
+			
 		xr_origin.visible = true
 		desktop_player.visible = false
 		vr_camera.current = true
-		
-		# Disabilita controller desktop
-		desktop_player.set_process(false)
-		desktop_player.set_physics_process(false)
 		
 		print("VR mode is ON")
 	else:
