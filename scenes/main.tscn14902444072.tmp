@@ -1,0 +1,297 @@
+[gd_scene load_steps=25 format=3 uid="uid://dbgx2vpd3v1qg"]
+
+[ext_resource type="PackedScene" uid="uid://c1atfbw4u8fuv" path="res://scenes/map/map.tscn" id="1_0wfyh"]
+[ext_resource type="Script" uid="uid://bp6jah5fqpe0i" path="res://scripts/main.gd" id="1_85g3d"]
+[ext_resource type="Material" uid="uid://wyikf3yxoy6x" path="res://addons/DayNightCycle/Sky_Day.tres" id="2_a8y0u"]
+[ext_resource type="PackedScene" uid="uid://dd5yqvopb16np" path="res://scenes/player/player.tscn" id="2_sugp2"]
+[ext_resource type="Script" uid="uid://ceqiy0nbhr1jt" path="res://addons/DayNightCycle/DayNightCycle.gd" id="3_jkv2x"]
+[ext_resource type="PackedScene" uid="uid://bbymaakt1t2m1" path="res://scenes/ceiling.tscn" id="4_jyhfs"]
+[ext_resource type="PackedScene" uid="uid://dl5s4ywmas6k1" path="res://scenes/camp.tscn" id="5_tbgi4"]
+[ext_resource type="Script" uid="uid://c12qgyu1hi1le" path="res://scripts/resource_spawner.gd" id="6_tefeu"]
+[ext_resource type="Script" uid="uid://v7ubnfdi2f2e" path="res://scripts/aggressive_spawner.gd" id="7_o6xl0"]
+[ext_resource type="PackedScene" uid="uid://c2hvn0q63lx3m" path="res://scenes/collectibles/fish_collectible.tscn" id="8_eb6dy"]
+[ext_resource type="PackedScene" uid="uid://cncj6juuyd35u" path="res://scenes/enemy/aggressive_seal.tscn" id="8_tipki"]
+[ext_resource type="PackedScene" uid="uid://ccfl71x1sc4pn" path="res://scenes/collectibles/water_collectible.tscn" id="9_trceg"]
+[ext_resource type="Script" uid="uid://gs475alht0uu" path="res://scripts/hud.gd" id="10_choun"]
+[ext_resource type="PackedScene" uid="uid://bkppck1saa1de" path="res://scenes/ui/game_over_screen.tscn" id="14_a8y0u"]
+[ext_resource type="Script" uid="uid://ccmgcpb65r6st" path="res://scripts/pause_menu.gd" id="14_jkv2x"]
+[ext_resource type="Script" uid="uid://hsc45rfj3rtm" path="res://scripts/vr_controller.gd" id="16_jbj1t"]
+[ext_resource type="Script" uid="uid://b4d78eq8m18yk" path="res://scripts/vr_movement.gd" id="16_muem4"]
+[ext_resource type="Script" uid="uid://cxbudxtaj27gd" path="res://scripts/vr_right_hand.gd" id="18_dp3eg"]
+[ext_resource type="PackedScene" uid="uid://bx1xdisoqo1f6" path="res://addons/godot-xr-tools/hands/scenes/lowpoly/left_tac_glove_low.tscn" id="18_gqmmt"]
+[ext_resource type="PackedScene" uid="uid://chumpejwiub7f" path="res://addons/godot-xr-tools/hands/scenes/lowpoly/right_tac_glove_low.tscn" id="20_yc10j"]
+[ext_resource type="PackedScene" uid="uid://clc5dre31iskm" path="res://addons/godot-xr-tools/xr/start_xr.tscn" id="21_yc10j"]
+
+[sub_resource type="Sky" id="Sky_jbj1t"]
+sky_material = ExtResource("2_a8y0u")
+
+[sub_resource type="Environment" id="Environment_0wfyh"]
+background_mode = 2
+background_color = Color(0.5568628, 0.78431374, 0.9098039, 1)
+sky = SubResource("Sky_jbj1t")
+ambient_light_color = Color(1, 1, 1, 1)
+ambient_light_energy = 0.5
+
+[sub_resource type="NavigationMesh" id="NavigationMesh_sugp2"]
+vertices = PackedVector3Array(-49.5, 0.5, -49.5, -49.5, 0.5, 49.5, 49.5, 0.5, 49.5, 49.5, 0.5, -49.5)
+polygons = [PackedInt32Array(3, 2, 0), PackedInt32Array(0, 2, 1)]
+agent_height = 1.0
+
+[node name="Main" type="Node3D"]
+script = ExtResource("1_85g3d")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_0wfyh")
+
+[node name="Sun" type="DirectionalLight3D" parent="." node_paths=PackedStringArray("worldEnvironment", "nightLight")]
+transform = Transform3D(0.8660254, 0.3535534, -0.3535534, 0, 0.7071068, 0.7071068, 0.5, -0.61237246, 0.61237246, 0, 149.75948, 483.53485)
+shadow_enabled = true
+script = ExtResource("3_jkv2x")
+worldEnvironment = NodePath("../WorldEnvironment")
+nightLight = NodePath("DirectionalLight3D")
+speedMultiplier = 5.0
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="Sun"]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 0, 0)
+light_energy = 0.0
+
+[node name="NavigationRegion3D" type="NavigationRegion3D" parent="."]
+navigation_mesh = SubResource("NavigationMesh_sugp2")
+
+[node name="Map" parent="NavigationRegion3D" instance=ExtResource("1_0wfyh")]
+
+[node name="Player" parent="." instance=ExtResource("2_sugp2")]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 0.5341269, -6.252656)
+
+[node name="Ceiling" parent="." instance=ExtResource("4_jyhfs")]
+transform = Transform3D(-0.77346414, 0, -0.63384, 0, 1, 0, 0.63384, 0, -0.77346414, 6.728281, 0.49075526, 2.5012417)
+
+[node name="Camp" parent="." instance=ExtResource("5_tbgi4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.0951447, 0.7750894, 0)
+
+[node name="ResourceSpawner" type="Node3D" parent="."]
+script = ExtResource("6_tefeu")
+fish_scene = ExtResource("8_eb6dy")
+water_scene = ExtResource("9_trceg")
+
+[node name="AggressiveSealSpawner" type="Node3D" parent="."]
+script = ExtResource("7_o6xl0")
+seal_scene = ExtResource("8_tipki")
+
+[node name="AttackSP1" type="Marker3D" parent="AggressiveSealSpawner"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14.066, 0.5, 20)
+
+[node name="AttackSP2" type="Marker3D" parent="AggressiveSealSpawner"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.737, 0.5, 20)
+
+[node name="AttackSP3" type="Marker3D" parent="AggressiveSealSpawner"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12.433, 0.5, -20)
+
+[node name="AttackSP4" type="Marker3D" parent="AggressiveSealSpawner"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15.812, 0.5, -20)
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="HUD" type="Control" parent="CanvasLayer"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("10_choun")
+
+[node name="NeedsPanel" type="PanelContainer" parent="CanvasLayer/HUD"]
+layout_mode = 1
+anchors_preset = 11
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -250.0
+grow_horizontal = 0
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/HUD/NeedsPanel"]
+layout_mode = 2
+
+[node name="HungerLabel" type="Label" parent="CanvasLayer/HUD/NeedsPanel/VBoxContainer"]
+layout_mode = 2
+text = "Hunger: 100%"
+
+[node name="HungerBar" type="ProgressBar" parent="CanvasLayer/HUD/NeedsPanel/VBoxContainer"]
+custom_minimum_size = Vector2(250, 20)
+layout_mode = 2
+value = 100.0
+
+[node name="ThirstLabel" type="Label" parent="CanvasLayer/HUD/NeedsPanel/VBoxContainer"]
+layout_mode = 2
+text = "Thirst: 100%"
+
+[node name="ThirstBar" type="ProgressBar" parent="CanvasLayer/HUD/NeedsPanel/VBoxContainer"]
+custom_minimum_size = Vector2(250, 20)
+layout_mode = 2
+value = 100.0
+
+[node name="InventoryPanel" type="PanelContainer" parent="CanvasLayer/HUD"]
+custom_minimum_size = Vector2(400, 40)
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -0.5
+offset_top = -50.0
+offset_right = 0.5
+grow_horizontal = 2
+grow_vertical = 0
+mouse_filter = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/HUD/InventoryPanel"]
+layout_mode = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="CanvasLayer/HUD/InventoryPanel/HBoxContainer"]
+layout_mode = 2
+
+[node name="FishLabel" type="Label" parent="CanvasLayer/HUD/InventoryPanel/HBoxContainer/PanelContainer"]
+layout_mode = 2
+
+[node name="PanelContainer2" type="PanelContainer" parent="CanvasLayer/HUD/InventoryPanel/HBoxContainer"]
+layout_mode = 2
+
+[node name="WaterLabel" type="Label" parent="CanvasLayer/HUD/InventoryPanel/HBoxContainer/PanelContainer2"]
+layout_mode = 2
+
+[node name="WarningPanel" type="PanelContainer" parent="CanvasLayer/HUD"]
+custom_minimum_size = Vector2(400, 40)
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -0.5
+offset_right = 0.5
+offset_bottom = 23.0
+grow_horizontal = 2
+mouse_filter = 2
+
+[node name="WarningLabel" type="Label" parent="CanvasLayer/HUD/WarningPanel"]
+layout_mode = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="CanvasLayer/HUD"]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -20.0
+offset_top = -98.0
+offset_right = 20.0
+offset_bottom = -58.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="InteractionPrompt" type="Label" parent="CanvasLayer/HUD/PanelContainer"]
+layout_mode = 2
+horizontal_alignment = 1
+
+[node name="SatisfactionPanel" type="PanelContainer" parent="CanvasLayer/HUD"]
+custom_minimum_size = Vector2(250, 0)
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -4.0
+offset_top = -27.0
+grow_horizontal = 0
+grow_vertical = 0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/HUD/SatisfactionPanel"]
+layout_mode = 2
+
+[node name="SatisfactionLabel" type="Label" parent="CanvasLayer/HUD/SatisfactionPanel/VBoxContainer"]
+layout_mode = 2
+text = "Satisfaction of the ceiling: 0%"
+
+[node name="SatisfactionBar" type="ProgressBar" parent="CanvasLayer/HUD/SatisfactionPanel/VBoxContainer"]
+layout_mode = 2
+
+[node name="PauseMenu" type="Control" parent="CanvasLayer"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("14_jkv2x")
+
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer/PauseMenu"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.29411766)
+
+[node name="CenterContainer" type="CenterContainer" parent="CanvasLayer/PauseMenu"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBox" type="VBoxContainer" parent="CanvasLayer/PauseMenu/CenterContainer"]
+layout_mode = 2
+
+[node name="PauseTitle" type="Label" parent="CanvasLayer/PauseMenu/CenterContainer/VBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 40
+text = "PAUSED"
+horizontal_alignment = 1
+
+[node name="Spacer" type="Control" parent="CanvasLayer/PauseMenu/CenterContainer/VBox"]
+custom_minimum_size = Vector2(0, 20)
+layout_mode = 2
+
+[node name="ResumeButton" type="Button" parent="CanvasLayer/PauseMenu/CenterContainer/VBox"]
+custom_minimum_size = Vector2(200, 50)
+layout_mode = 2
+text = "Resume"
+
+[node name="RestartButton" type="Button" parent="CanvasLayer/PauseMenu/CenterContainer/VBox"]
+custom_minimum_size = Vector2(200, 50)
+layout_mode = 2
+text = "Restart"
+
+[node name="QuitButton" type="Button" parent="CanvasLayer/PauseMenu/CenterContainer/VBox"]
+custom_minimum_size = Vector2(200, 50)
+layout_mode = 2
+text = "Quit"
+
+[node name="GameOverScreen" parent="." instance=ExtResource("14_a8y0u")]
+
+[node name="XROrigin3D" type="XROrigin3D" parent="."]
+script = ExtResource("16_muem4")
+
+[node name="XRCamera3D" type="XRCamera3D" parent="XROrigin3D"]
+
+[node name="LeftController" type="XRController3D" parent="XROrigin3D"]
+tracker = &"left_hand"
+script = ExtResource("16_jbj1t")
+
+[node name="LeftHand" parent="XROrigin3D/LeftController" instance=ExtResource("18_gqmmt")]
+
+[node name="RightController" type="XRController3D" parent="XROrigin3D"]
+tracker = &"right_hand"
+script = ExtResource("18_dp3eg")
+
+[node name="RightHand" parent="XROrigin3D/RightController" instance=ExtResource("20_yc10j")]
+
+[node name="StartXR" parent="." instance=ExtResource("21_yc10j")]
