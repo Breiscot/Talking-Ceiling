@@ -4,12 +4,12 @@ importer="scene"
 importer_version=1
 type="PackedScene"
 uid="uid://cembmvo7rksjq"
-path="res://.godot/imported/vr_hands__bouldering_r__rigged.glb-7f28f44b02e5866d0391ae90a6cd9267.scn"
+path="res://.godot/imported/vr_hands.glb-313a77c010249cbfc1c8fd2240fe5655.scn"
 
 [deps]
 
-source_file="res://models/VR/vr_hands__bouldering_r__rigged.glb"
-dest_files=["res://.godot/imported/vr_hands__bouldering_r__rigged.glb-7f28f44b02e5866d0391ae90a6cd9267.scn"]
+source_file="res://models/VR/vr_hands.glb"
+dest_files=["res://.godot/imported/vr_hands.glb-313a77c010249cbfc1c8fd2240fe5655.scn"]
 
 [params]
 

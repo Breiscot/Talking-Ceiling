@@ -35,12 +35,6 @@ func _ready():
 			
 	if not anim_player:
 		push_warning("AnimationPlayer not founded on controller %s" % hand)
-		
-	# Specchia se é la mano sinistra
-	for child in get_children():
-		if child is Node3D and child.name != "laser":
-			if hand == "left":
-				child.scale.x = -1.0
 				
 	await get_tree().create_timer(0.5).timeout
 	_find_inventory()
