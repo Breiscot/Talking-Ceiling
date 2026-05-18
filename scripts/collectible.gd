@@ -1,31 +1,19 @@
-extends Area3D
+extends RigidBody3D
 
 # Tipo
 enum CollectibleType { FISH, WATER }
 @export var type: CollectibleType = CollectibleType.FISH
 @export var amount: int = 1
 
-# Animazione
-@export var bob_speed: float = 2.0
-@export var bob_height: float = 0.3
-@export var rotate_speed: float = 60.0
-
-# Effetti
-@export var collect_sound: AudioStream
-
-var start_position: Vector3
-var is_collected: bool = false
-var is_ready: bool = false
+var collected: bool = false
 var spawn_protection: bool = true
+var bob_start_y: float = 0.0
+var initialized: bool = false
 
 func _ready():
-	body_entered.connect(_on_body_entered)
-	_setup_visual()
+	add_to_group("grabbable")
 	
-	await get_tree().create_timer(0.5).timeout
-	start_position = global_position
-	is_ready = true
-	spawn_protection = false
+	var area = Area3D.new()
 	
 func _process(delta):
 	if is_collected or not is_ready:
