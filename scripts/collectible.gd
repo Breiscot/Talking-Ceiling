@@ -14,90 +14,94 @@ func _ready():
 	add_to_group("grabbable")
 	
 	var area = Area3D.new()
+	var shape = CollisionShape3D.new()
+	var sphere = SphereShape3D.new()
+	sphere.radius = 0.5
+	shape.shape = sphere
+	area.add_child(shape)
+	add_child(area)
+	area.body_entered.connect(_on_body_entered)
+	
+	spawn_protection = true
+	await get_tree().create_timer(0.5).timeout
+	bob_start_y = global_position.y
+	initialized = true
+	spawn_protection = false
+	
+	_setup_visual()
 	
 func _process(delta):
-	if is_collected or not is_ready:
+	if collected or not initialized:
 		return
 		
-	var new_y = start_position.y + sin(Time.get_ticks_msec() / 1000.0 * bob_speed) * bob_height
-	global_position = Vector3(start_position.x, new_y, start_position.z)
+	if not is_instance_valid(get_parent()) or not (get_parent() is XRController3D):
+		global_position.y = bob_start_y + sin(Time.get_ticks_msec() / 1000.0 * 2.0) * 0.3
+		rotate_y(delta * 2.0)
+		
+func get_item_type() -> String:
+	if type == CollectibleType.FISH:
+		return "fish"
+	return "water"
 	
-	rotate_y(deg_to_rad(rotate_speed * delta))
+func grab(_controller):
+	freeze = true
+	gravity_scale = 0
 	
+func release():
+	freeze = false
+	gravity_scale = 1.0
+	apply_central_impulse(Vector3(randf_range(-1,1), 0.5, randf_range(-1,1)))
+	
+func _on_body_entered(body):
+	if collected or spawn_protection:
+		return
+		
+	if body.is_in_group("player") and not body is XRController3D:
+		var inv = body.get_node_or_null("PlayerInventory")
+		if not inv:
+			return
+			
+		var ok = false
+		if type == CollectibleType.FISH:
+			ok = inv.add_fish(amount)
+		else:
+			ok = inv.add_water(amount)
+			
+		if ok:
+			collected = true
+			queue_free()
+			
 func _setup_visual():
 	var mesh = get_node_or_null("MeshInstance3D")
 	if not mesh:
 		return
 		
-	var material = StandardMaterial3D.new()
+	var mat = StandardMaterial3D.new()
+	mat.emission_enabled = true
 	
-	match type:
-		CollectibleType.FISH:
-			material.albedo_color = Color(0.3, 0.6, 0.9)
-			material.emission_enabled = true
-			material.emission = Color(0.2, 0.4, 0.8)
-			material.emission_energy_multiplier = 0.5
-		CollectibleType.WATER:
-			material.albedo_color = Color(0.2, 0.8, 1.0)
-			material.emission_enabled = true
-			material.emission = Color(0.1, 0.6, 1.0)
-			material.emission_energy_multiplier = 0.5
-			material.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
-			material.albedo_color.a = 0.8
+	if type == CollectibleType.FISH:
+		mat.albedo_color = Color(0.3, 0.6, 0.9)
+		mat.emission = Color(0.2, 0.4, 0.8)
+	else:
+		mat.albedo_color = Color(0.2, 0.8, 1.0)
+		mat.emission = Color(0.1, 0.6, 1.0)
 			
-	mesh.material_override = material
-	
-func _on_body_entered(body):
-	if is_collected or spawn_protection:
-		return
-		
-	if body.is_in_group("player") or body.name == "Player":
-		var inventory = body.get_node_or_null("PlayerInventory")
-		if not inventory:
-			return
-			
-		var collected = false
-		
-		match type:
-			CollectibleType.FISH:
-				collected = inventory.add_fish(amount)
-			CollectibleType.WATER:
-				collected = inventory.add_water(amount)
-				
-		if collected:
-			_collect()
-			
-func _collect():
-	is_collected = true
-	
-	var mesh = get_node_or_null("MeshInstance3D")
-	if mesh:
-		mesh.visible = false
-		
-	# Disabilità collisione
-	set_deferred("monitoring", false)
-	
-	queue_free()
-	
-# Interazione
+	mat.emission_energy_multiplier = 0.5
+	mesh.material_override = mat
+
 func get_interaction_text() -> String:
-	match type:
-		CollectibleType.FISH:
-			return "Collect fish"
-		CollectibleType.WATER:
-			return "Collect water"
-	return "Collect"
+	if type == CollectibleType.FISH:
+		return "Collect fish"
+	return "Collect water"
 	
-func interact(inventory):
-	if is_collected:
-		return
-		
-	var collected = false
-	match type:
-		CollectibleType.FISH:
-			collected = inventory.add_fish(amount)
-		CollectibleType.WATER:
-			collected = inventory.add_water(amount)
-			
+func interact(inv):
 	if collected:
-		_collect()
+		return
+	var ok = false
+	if type == CollectibleType.FISH:
+		ok = inv.add_fish(amount)
+	else:
+		ok = inv.add_water(amount)
+	if ok:
+		collected = true
+		queue_free()
