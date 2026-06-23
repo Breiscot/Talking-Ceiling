@@ -9,6 +9,7 @@ extends Control
 @onready var warning_panel: PanelContainer = $WarningPanel
 @onready var warning_label: Label = $WarningPanel/WarningLabel
 @onready var interaction_label: Label = $PanelContainer/InteractionPrompt
+@onready var level_label: Label = $TopBar/LevelLabel
 @onready var satisfaction_bar: ProgressBar = $SatisfactionPanel/VBoxContainer/SatisfactionBar
 @onready var satisfaction_label: Label = $SatisfactionPanel/VBoxContainer/SatisfactionLabel
 

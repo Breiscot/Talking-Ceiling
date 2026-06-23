@@ -91,8 +91,8 @@ func _setup_visual():
 
 func get_interaction_text() -> String:
 	if type == CollectibleType.FISH:
-		return "Collect fish"
-	return "Collect water"
+		return "[E] Collect fish"
+	return "[E] Collect water"
 	
 func interact(inv):
 	if collected:
