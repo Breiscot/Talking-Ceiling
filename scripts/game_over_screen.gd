@@ -2,7 +2,7 @@ extends Control
 
 @onready var title = $CenterContainer/VBox/TitleLabel
 @onready var message = $CenterContainer/VBox/MessageLabel
-@onready var satisfaction_label = $CenterContainer/VBox/SatisfactionLabel
+@onready var info_label = $CenterContainer/VBox/InfoLabel
 @onready var restart_btn = $CenterContainer/VBox/RestartButton
 @onready var quit_btn = $CenterContainer/VBox/QuitButton
 
@@ -24,7 +24,11 @@ func _show_lose():
 	title.text = "GAME OVER"
 	title.add_theme_color_override("font_color", Color.RED)
 	message.text = "The aggressive ceilings got you..."
-	satisfaction_label.text = "Satisfaction reached: %.0f%%" % GameManager.satisfaction
+	info_label.text = "You reached level %d / %d\nSatisfaction reached: %.0f%%" % [
+		GameManager.current_level,
+		GameManager.max_level,
+		GameManager.satisfaction
+	]
 	
 func _show_win():
 	visible = true
@@ -32,9 +36,9 @@ func _show_win():
 	get_tree().paused = true
 	
 	title.text = "YOU WIN"
-	title.add_theme_color_override("font_color", Color.GREEN)
-	message.text = "The ceiling is completely happy!"
-	satisfaction_label.text = "Satisfaction: 100%"
+	title.add_theme_color_override("font_color", Color.GOLD)
+	message.text = "You completed all %d levels!\nThe ceiling is completely happy!" % GameManager.max_level
+	info_label.text = "Satisfaction: 100%"
 	
 func _restart():
 	get_tree().paused = false

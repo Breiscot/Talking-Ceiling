@@ -46,6 +46,9 @@ func _ready():
 		
 	# Connette Soddisfazione
 	GameManager.satisfaction_changed.connect(_on_satisfaction)
+	GameManager.level_changed.connect(_on_level_changed)
+	
+	_on_level_changed(1)
 	
 	if warning_panel:
 		warning_panel.visible = false
@@ -84,9 +87,18 @@ func _on_inventory(fish: int, water: int):
 func _on_satisfaction(value: float):
 	if satisfaction_bar:
 		satisfaction_bar.value = value
-		satisfaction_bar.modulate = Color.GREEN if value > 50 else Color.YELLOW
+		if value > 75:
+			satisfaction_bar.modulate = Color.GREEN
+		elif value > 40: 
+			satisfaction_bar.modulate = Color.YELLOW 
+		else:
+			satisfaction_bar.modulate = Color.WHITE
 	if satisfaction_label:
 		satisfaction_label.text = "Satisfaction of the ceiling: %.0f%%" % value
+		
+func _on_level_changed(level: int):
+	if level_label:
+		level_label.text = "Level %d / %d" % [level, GameManager.max_level]
 		
 func _show_warning(text: String, color: Color):
 	if warning_panel:

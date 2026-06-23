@@ -37,6 +37,11 @@ func _ready():
 	_spawn_resources()
 	_start_respawn_loop()	#Respawna periodicamente
 	
+	GameManager.level_changed.connect(_on_level_changed)
+	
+func _on_level_changed(_level: int):
+	_spawn_resources()
+	
 func _start_respawn_loop():
 	while true:
 		await get_tree().create_timer(respawn_time).timeout

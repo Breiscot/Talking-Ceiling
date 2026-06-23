@@ -28,8 +28,8 @@ var max_level: int = 15
 # Satisfaction
 var satisfaction: float = 0.0
 var max_satisfaction: float = 100.0
-var satisfaction_per_fish: float = 8.0
-var satisfaction_per_water: float = 8.0
+var base_satisfaction_per_fish: float = 8.0
+var base_satisfaction_per_water: float = 8.0
 var satisfaction_decay: float = 0.3
 
 # Difficulty for level

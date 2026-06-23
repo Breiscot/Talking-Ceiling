@@ -21,7 +21,16 @@ var max_value: float = 100.0
 
 var is_in_danger: bool = false
 var is_critical: bool = false
+
+func _ready():
+	GameManager.seal_needs = self
+	GameManager.level_changed.connect(_on_level_changed)
 	
+func _on_level_changed(level: int):
+	is_in_danger = false
+	is_critical = false
+	hunger = 80.0
+	thirst = 80.0
 
 func _process(delta):
 	if GameManager.is_paused or GameManager.is_game_over:
