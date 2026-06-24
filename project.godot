@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Talking Ceiling"
-run/main_scene="uid://dbgx2vpd3v1qg"
+run/main_scene="uid://bjmgvge7d3q2"
 config/features=PackedStringArray("4.5", "GL Compatibility")
 config/icon="res://icon.svg"
 

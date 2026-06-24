@@ -35,6 +35,34 @@ var satisfaction_decay: float = 0.3
 # Difficulty for level
 var difficulty_multiplier: float = 1.0
 
+# Difficulty
+var difficulty: String = "hard"
+var difficulty_presets = {
+	"easy": {
+		"base_hunger_decay": 1.2,
+		"base_thirst_decay": 1.5,
+		"hunger_increase_per_level": 0.1,
+		"thirst_increase_per_level": 0.12,
+		"base_satisfaction_per_fish": 12.0,
+		"base_satisfaction_per_water": 12.0,
+		"satisfaction_decay": 0.15,
+		"difficulty_increase_per_level": 0.08
+	},
+	"hard": {
+		"base_hunger_decay": 2.0,
+		"base_thirst_decay": 2.5,
+		"hunger_increase_per_level": 0.3,
+		"thirst_increase_per_level": 0.35,
+		"base_satisfaction_per_fish": 8.0,
+		"base_satisfaction_per_water": 8.0,
+		"satisfaction_decay": 0.3,
+		"difficulty_increase_per_level": 0.2
+	}
+}
+
+# Settings
+var mouse_sensitivity: float = 0.002
+
 func _ready():
 	print("Game Manager iniziato.")
 	
@@ -77,17 +105,22 @@ func _complete_level():
 func advance_to_next_level():
 	current_level += 1
 	satisfaction = 0.0
-	difficulty_multiplier = 1.0 + (current_level - 1) * 0.2
 	
+	var preset = difficulty_presets[difficulty]
+	
+	# Increase difficulty in base on preset
+	difficulty_multiplier = 1.0 + (current_level - 1) * preset.difficulty_increase_per_level
+	
+	# Update decay hunger/thirst of Ceiling
 	if seal_needs:
-		seal_needs.hunger_decay = 2.0 + (current_level - 1) * 0.3
-		seal_needs.thirst_decay = 2.5 + (current_level - 1) * 0.35
+		seal_needs.hunger_decay = preset.base_hunger_decay + (current_level - 1) * preset.hunger_increase_per_level
+		seal_needs.thirst_decay = preset.base_thirst_decay + (current_level - 1) * preset.thirst_increase_per_level
 		
 	is_paused = false
 	satisfaction_changed.emit(satisfaction)
 	level_changed.emit(current_level)
 	print("Level %d. Difficulty: x%.1f" % [current_level, difficulty_multiplier])
-		
+
 func trigger_aggressive_seals():
 	if is_game_over:
 		return
@@ -115,3 +148,14 @@ func restart_game():
 	satisfaction = 0.0
 	difficulty_multiplier = 1.0
 	get_tree().reload_current_scene()
+
+func set_difficulty(diff: String):
+	difficulty = diff
+	var preset = difficulty_presets[diff]
+	
+	base_satisfaction_per_fish = preset.base_satisfaction_per_fish
+	base_satisfaction_per_water = preset.base_satisfaction_per_water
+	satisfaction_decay = preset.satisfaction_decay
+	
+	print("Difficulty: %s" % diff.to_upper())
+	
