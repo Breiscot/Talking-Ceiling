@@ -20,8 +20,17 @@ extends Control
 @onready var sens_slider = $SettingsPanel/SetCenter/SetVBox/SensRow/SensSlider
 @onready var set_back_btn = $SettingsPanel/SetCenter/SetVBox/SetBackButton
 
+# Camere
+var menu_camera: Camera3D = null
+var difficulty_camera: Camera3D = null
+
 func _ready():
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+	
+	var bg = get_node_or_null("MenuBackground")
+	if bg:
+		menu_camera = bg.get_node_or_null("MenuCamera")
+		difficulty_camera = bg.get_node_or_null("DifficultyCamera")
 	
 	# Main Menu
 	play_btn.pressed.connect(_show_difficulty)
@@ -53,8 +62,33 @@ func _show_main():
 	
 func _show_difficulty():
 	title_container.visible = false
-	diff_panel.visible = true
 	settings_panel.visible = false
+	
+	# Move camera to the second position
+	if menu_camera and difficulty_camera:
+		menu_camera.transition_to(difficulty_camera)
+		
+	await get_tree().create_timer(0.5).timeout
+	diff_panel.visible = true
+	
+func _back_from_difficulty():
+	diff_panel.visible = false
+	
+	if menu_camera:
+		var original_pos = menu_camera.start_position
+		menu_camera.start_position = menu_camera.global_position
+		
+		var temp_cam = Camera3D.new()
+		temp_cam.global_position = original_pos
+		temp_cam.global_rotation = menu_camera.global_rotation
+		get_tree().current_scene.add_child(temp_cam)
+		
+		menu_camera.transition_to(temp_cam)
+		
+		await get_tree().create_timer(1.5).timeout
+		temp_cam.queue_free()
+		
+	title_container.visible = true
 	
 func _show_settings():
 	title_container.visible = false
