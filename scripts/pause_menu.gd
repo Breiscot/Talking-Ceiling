@@ -108,8 +108,17 @@ func _restart():
 	GameManager.restart_game()
 	
 func _main_menu():
+	visible = false
 	get_tree().paused = false
-	GameManager.restart_game()
+	
+	GameManager.is_paused = false
+	GameManager.is_game_over = false
+	GameManager.has_won = false
+	GameManager.current_level = 1
+	GameManager.satisfaction = 0.0
+	GameManager.difficulty_multiplier = 1.0
+	
+	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	get_tree().change_scene_to_file("res://scenes/main_menu.tscn")
 	
 func _quit():
