@@ -35,12 +35,13 @@ func _unhandled_input(event):
 	if GameManager.is_game_over or GameManager.is_paused:
 		return
 		
-	if event is InputEventMouseMotion:
+	if event is InputEventMouseMotion and camera_pivot:
+		var sens = GameManager.mouse_sensitivity if GameManager.mouse_sensitivity > 0 else mouse_sensitivity
 		# Rotazione orizzontale (player)
-		rotate_y(-event.relative.x * mouse_sensitivity)
+		rotate_y(-event.relative.x * sens)
 		
 		# Rotazione verticale (camera)
-		camera_rotation_x += -event.relative.y * mouse_sensitivity
+		camera_rotation_x += -event.relative.y * sens
 		camera_rotation_x = clamp(
 			camera_rotation_x,
 			deg_to_rad(max_look_down),
