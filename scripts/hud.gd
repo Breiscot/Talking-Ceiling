@@ -6,6 +6,7 @@ extends Control
 @onready var thirst_label: Label = $NeedsPanel/VBoxContainer/ThirstLabel
 @onready var fish_label: Label = $InventoryPanel/HBoxContainer/PanelContainer/FishLabel
 @onready var water_label: Label = $InventoryPanel/HBoxContainer/PanelContainer2/WaterLabel
+@onready var wood_label: Label = $InventoryPanel/HBoxContainer/PanelContainer3/WoodLabel
 @onready var warning_panel: PanelContainer = $WarningPanel
 @onready var warning_label: Label = $WarningPanel/WarningLabel
 @onready var interaction_label: Label = $PanelContainer/InteractionPrompt
@@ -37,7 +38,7 @@ func _ready():
 	if seal_needs:
 		seal_needs.hunger_changed.connect(_on_hunger)
 		seal_needs.thirst_changed.connect(_on_thirst)
-		seal_needs.status_danger.connect(func(): _show_warning("The ceiling needs care!", Color.YELLOW))
+		seal_needs.status_danger.connect(func(): _show_warning("Ceiling needs care!", Color.YELLOW))
 		seal_needs.status_critical.connect(func(): _show_warning("AGGRESSIVE SEALS INCOMING...", Color.RED))
 		seal_needs.status_safe.connect(func(): warning_panel.visible = false)
 		
@@ -72,20 +73,22 @@ func _on_hunger(value: float):
 		hunger_bar.value = value
 		hunger_bar.modulate = _bar_color(value / 100.0)
 	if hunger_label:
-		hunger_label.text = "Hunger of the ceiling:"
+		hunger_label.text = "Hunger of Ceiling:"
 		
 func _on_thirst(value: float):
 	if thirst_bar:
 		thirst_bar.value = value
 		thirst_bar.modulate = _bar_color(value / 100.0)
 	if thirst_label:
-		thirst_label.text = "Thirst of the ceiling:"
+		thirst_label.text = "Thirst of Ceiling:"
 		
-func _on_inventory(fish: int, water: int):
+func _on_inventory(fish: int, water: int, wood: int):
 	if fish_label:
 		fish_label.text = "Fish x%d" % fish
 	if water_label:
 		water_label.text = "Water x%d" % water
+	if wood_label:
+		wood_label.text = "Wood x%d" % wood
 		
 func _on_satisfaction(value: float):
 	if satisfaction_bar:
@@ -97,7 +100,7 @@ func _on_satisfaction(value: float):
 		else:
 			satisfaction_bar.modulate = Color.WHITE
 	if satisfaction_label:
-		satisfaction_label.text = "Satisfaction of the ceiling: %.0f%%" % value
+		satisfaction_label.text = "Satisfaction of Ceiling: %.0f%%" % value
 		
 func _on_level_changed(level: int):
 	if level_label:

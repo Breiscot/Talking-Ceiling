@@ -29,8 +29,10 @@ var is_night: bool = false
 var is_lit: bool = false
 
 func _ready():
-	_set_fire_level(max_fire_level)
+	fire_level = max_fire_level
 	state = FireState.LIT
+	
+	_update_visuals()
 	
 	await get_tree().process_frame
 	_find_day_night_cycle()
@@ -104,3 +106,39 @@ func _extinguish():
 	fire_level = 0.0
 	fire_died.emit()
 	print("The fire is out")
+	
+func _on_night_started():
+	is_night = true
+	print("Is night. Keep the fire lit for Ceiling.")
+	
+func _on_day_started():
+	is_night = false
+	print("Is day. Fire is no longer needed.")
+	
+func get_interaction_text() -> String:
+	var inv = _find_inventory()
+	if not inv:
+		return "Campfire"
+		
+	if state == FireState.OFF:
+		return "Restart the fire (you need wood)"
+	elif inv.wood > 0:
+		return "Add wood (%d remained)" % inv.wood
+	else:
+		return "You don't have any wood"
+		
+func interact(inventory):
+	if not inventory:
+		return
+		
+	if inventory.use_wood(1):
+		add_wood(wood_restore)
+		print("Added wood on fire")
+	else:
+		print("You don't have any wood")
+		
+func _find_inventory():
+	var player = get_tree().get_first_node_in_group("player")
+	if player:
+		return player.get_node_or_null("PlayerInventory")
+	return null

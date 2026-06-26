@@ -16,6 +16,10 @@ signal level_completed(level: int)
 var is_game_over: bool = false
 var has_won: bool = false
 var is_paused: bool = false
+var is_night: bool = false
+
+# Campfire
+var campfire: Node3D = null
 
 # Seal
 var seal: Node3D = null
@@ -79,6 +83,9 @@ func _process(delta):
 		satisfaction = max_satisfaction
 		satisfaction_changed.emit(satisfaction)
 		_complete_level()
+		
+	if Engine.get_frames_drawn() % 600 == 0:
+		check_campfire()
 		
 func add_satisfaction(type: String):
 	if is_game_over or has_won or is_paused:
@@ -159,3 +166,11 @@ func set_difficulty(diff: String):
 	
 	print("Difficulty: %s" % diff.to_upper())
 	
+func check_campfire():
+	if is_night and campfire:
+		if campfire.has_method("get_fire_state"):
+			var state = campfire.get_fire_state()
+			if state == 0:
+				if seal_needs:
+					seal_needs.hunger_decay *= 1.5
+					seal_needs.thirst_decay *= 1.5

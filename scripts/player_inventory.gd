@@ -53,14 +53,14 @@ func use_fish() -> bool:
 	if fish <= 0:
 		return false
 	fish -= 1
-	inventory_changed.emit(fish, water_bottles)
+	inventory_changed.emit(fish, water_bottles, wood)
 	return true
 	
 func use_water() -> bool:
 	if water_bottles <= 0:
 		return false
 	water_bottles -= 1
-	inventory_changed.emit(fish, water_bottles)
+	inventory_changed.emit(fish, water_bottles, wood)
 	return true
 	
 func use_wood(amount: int = 1) -> bool:

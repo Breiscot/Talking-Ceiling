@@ -69,8 +69,10 @@ func _on_body_entered(body):
 		var ok = false
 		if type == CollectibleType.FISH:
 			ok = inv.add_fish(amount)
-		else:
+		elif type == CollectibleType.WATER:
 			ok = inv.add_water(amount)
+		else:
+			ok = inv.add_wood(amount)
 			
 		if ok:
 			collected = true
@@ -84,29 +86,42 @@ func _setup_visual():
 	var mat = StandardMaterial3D.new()
 	mat.emission_enabled = true
 	
-	if type == CollectibleType.FISH:
-		mat.albedo_color = Color(0.3, 0.6, 0.9)
-		mat.emission = Color(0.2, 0.4, 0.8)
-	else:
-		mat.albedo_color = Color(0.2, 0.8, 1.0)
-		mat.emission = Color(0.1, 0.6, 1.0)
+	match type:
+		CollectibleType.FISH:
+			mat.albedo_color = Color(0.3, 0.6, 0.9)
+			mat.emission = Color(0.2, 0.4, 0.8)
+		CollectibleType.WATER:
+			mat.albedo_color = Color(0.2, 0.8, 1.0)
+			mat.emission = Color(0.1, 0.6, 1.0)
+		CollectibleType.WOOD:
+			mat.albedo_color = Color(0.5, 0.3, 0.1)
+			mat.emission = Color(0.3, 0.15, 0.05)
+			mat.emission_energy_multiplier = 0.3
 			
 	mat.emission_energy_multiplier = 0.5
 	mesh.material_override = mat
 
 func get_interaction_text() -> String:
-	if type == CollectibleType.FISH:
-		return "[E] Collect fish"
-	return "[E] Collect water"
+	match type:
+		CollectibleType.FISH:
+			return "[E] Collect fish"
+		CollectibleType.WATER:
+			return "[E] Collect water"
+		CollectibleType.WOOD:
+			return "[E] Collect wood"
+	return "[E] Collect"
 	
 func interact(inv):
 	if collected:
 		return
 	var ok = false
-	if type == CollectibleType.FISH:
-		ok = inv.add_fish(amount)
-	else:
-		ok = inv.add_water(amount)
+	match type:
+		CollectibleType.FISH:
+			ok = inv.add_fish(amount)
+		CollectibleType.WATER:
+			ok = inv.add_water(amount)
+		CollectibleType.WOOD:
+			ok = inv.add_wood(amount)
 	if ok:
 		collected = true
 		queue_free()
