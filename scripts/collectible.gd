@@ -1,7 +1,7 @@
 extends RigidBody3D
 
 # Tipo
-enum CollectibleType { FISH, WATER }
+enum CollectibleType { FISH, WATER, WOOD }
 @export var type: CollectibleType = CollectibleType.FISH
 @export var amount: int = 1
 
@@ -39,6 +39,11 @@ func _process(delta):
 		rotate_y(delta * 2.0)
 		
 func get_item_type() -> String:
+	match type:
+		CollectibleType.FISH: return "fish"
+		CollectibleType.WATER: return "water"
+		CollectibleType.WOOD: return "wood"
+	
 	if type == CollectibleType.FISH:
 		return "fish"
 	return "water"

@@ -3,8 +3,10 @@ extends Node3D
 # Scene
 @export var fish_scene: PackedScene
 @export var water_scene: PackedScene
+@export var wood_scene: PackedScene
 @export var fish_count: int = 8
 @export var water_count: int = 6
+@export var wood_count: int = 4
 @export var respawn_time: float = 30.0
 
 var spawned = []
@@ -68,6 +70,11 @@ func _spawn_resources():
 	for i in range(water_count):
 		if idx >= available.size(): break
 		_spawn_at(water_scene, available[idx])
+		idx += 1
+		
+	for i in range(wood_count):
+		if idx >= available.size(): break
+		_spawn_at(wood_scene, available[idx])
 		idx += 1
 		
 func _spawn_at(scene: PackedScene, pos: Vector3):

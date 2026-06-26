@@ -9,6 +9,7 @@ extends Control
 @onready var warning_panel: PanelContainer = $WarningPanel
 @onready var warning_label: Label = $WarningPanel/WarningLabel
 @onready var interaction_label: Label = $PanelContainer/InteractionPrompt
+@onready var interaction_panel: PanelContainer = $PanelContainer
 @onready var level_label: Label = $TopBar/LevelLabel
 @onready var satisfaction_bar: ProgressBar = $SatisfactionPanel/VBoxContainer/SatisfactionBar
 @onready var satisfaction_label: Label = $SatisfactionPanel/VBoxContainer/SatisfactionLabel
@@ -56,12 +57,14 @@ func _ready():
 		interaction_label.visible = false
 		
 func _process(_delta):
-	if player_interaction and interaction_label:
+	if player_interaction and interaction_label and interaction_panel:
 		if player_interaction.current_target:
+			interaction_panel.visible = true
 			interaction_label.visible = true
 			if player_interaction.current_target.has_method("get_interaction_text"):
 				interaction_label.text = player_interaction.current_target.get_interaction_text()
 		else:
+			interaction_panel.visible = false
 			interaction_label.visible = false
 		
 func _on_hunger(value: float):
