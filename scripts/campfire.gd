@@ -36,20 +36,12 @@ func _ready():
 	
 	await get_tree().process_frame
 	_find_day_night_cycle()
-	
-func _find_day_night_cycle():
-	var day_night = get_tree().get_first_node_in_group("day_night")
-	if day_night and day_night.has_method("is_night_time"):
-		is_night = day_night.is_night_time()
-	elif day_night and day_night.has_signal("night_started"):
-		day_night.night_started.connect(_on_night_started)
-		day_night.day_started.connect(_on_day_started)
-	else:
-		print("- Cycle day/night not found, the fire won't work well")
 		
 func _process(delta):
 	if GameManager.is_game_over or GameManager.is_paused:
 		return
+		
+	is_night = GameManager.is_night
 		
 	_update_fire(delta)
 	_update_visuals()
@@ -142,3 +134,19 @@ func _find_inventory():
 	if player:
 		return player.get_node_or_null("PlayerInventory")
 	return null
+	
+func is_fire_lit() -> bool:
+	return state != FireState.OFF
+	
+func _find_day_night_cycle():
+	var day_night = get_tree().get_first_node_in_group("day_night")
+	
+	if day_night:
+		if day_night.has_method("is_night_time"):
+			is_night = day_night.is_night_time()
+			
+		if day_night.has_signal("night_started"):
+			day_night.night_started.connect(_on_night_started)
+			day_night.day_started.connect(_on_day_started)
+		else:
+			print("- Cycle day/night not found, the fire won't work well.")

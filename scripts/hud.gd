@@ -2,8 +2,10 @@ extends Control
 
 @onready var hunger_bar: ProgressBar = $NeedsPanel/VBoxContainer/HungerBar
 @onready var thirst_bar: ProgressBar = $NeedsPanel/VBoxContainer/ThirstBar
+@onready var warmth_bar: ProgressBar = $NeedsPanel/VBoxContainer/WarmthBar
 @onready var hunger_label: Label = $NeedsPanel/VBoxContainer/HungerLabel
 @onready var thirst_label: Label = $NeedsPanel/VBoxContainer/ThirstLabel
+@onready var warmth_label: Label = $NeedsPanel/VBoxContainer/WarmthLabel
 @onready var fish_label: Label = $InventoryPanel/HBoxContainer/PanelContainer/FishLabel
 @onready var water_label: Label = $InventoryPanel/HBoxContainer/PanelContainer2/WaterLabel
 @onready var wood_label: Label = $InventoryPanel/HBoxContainer/PanelContainer3/WoodLabel
@@ -38,6 +40,7 @@ func _ready():
 	if seal_needs:
 		seal_needs.hunger_changed.connect(_on_hunger)
 		seal_needs.thirst_changed.connect(_on_thirst)
+		seal_needs.warmth_changed.connect(_on_warmth)
 		seal_needs.status_danger.connect(func(): _show_warning("Ceiling needs care!", Color.YELLOW))
 		seal_needs.status_critical.connect(func(): _show_warning("AGGRESSIVE SEALS INCOMING...", Color.RED))
 		seal_needs.status_safe.connect(func(): warning_panel.visible = false)
@@ -81,6 +84,13 @@ func _on_thirst(value: float):
 		thirst_bar.modulate = _bar_color(value / 100.0)
 	if thirst_label:
 		thirst_label.text = "Thirst of Ceiling:"
+		
+func _on_warmth(value: float):
+	if warmth_bar:
+		warmth_bar.value = value
+		warmth_bar.modulate = _bar_color(value / 100.0)
+	if warmth_label:
+		warmth_label.text = "Warmth of Ceiling:"
 		
 func _on_inventory(fish: int, water: int, wood: int):
 	if fish_label:

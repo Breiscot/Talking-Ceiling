@@ -70,6 +70,9 @@ var mouse_sensitivity: float = 0.002
 func _ready():
 	print("Game Manager iniziato.")
 	
+	await get_tree().process_frame
+	_find_campfire()
+	
 func _process(delta):
 	if is_game_over or has_won or is_paused:
 		return
@@ -86,6 +89,23 @@ func _process(delta):
 		
 	if Engine.get_frames_drawn() % 600 == 0:
 		check_campfire()
+		
+func _find_campfire():
+	var scene = get_tree().current_scene
+	if scene:
+		var campfire_node = scene.get_node_or_null("Campfire")
+		if not campfire_node:
+			campfire_node = scene.get_node_or_null("Campfire/Campfire")
+		if not campfire_node:
+			var nodes = get_tree().get_nodes_in_group("campfire")
+			if nodes.size() > 0:
+				campfire_node = nodes[0]
+				
+		if campfire_node:
+			campfire = campfire_node
+			print("Campfire found")
+		else:
+			print("- Campfire not founded")
 		
 func add_satisfaction(type: String):
 	if is_game_over or has_won or is_paused:
@@ -104,10 +124,11 @@ func add_satisfaction(type: String):
 func _complete_level():
 	is_paused = true
 	print("Level %d completed." % current_level)
-	level_completed.emit(current_level)
 	
 	if current_level >= max_level:
 		win_game()
+	else:
+		level_completed.emit(current_level)
 		
 func advance_to_next_level():
 	current_level += 1
@@ -174,3 +195,6 @@ func check_campfire():
 				if seal_needs:
 					seal_needs.hunger_decay *= 1.5
 					seal_needs.thirst_decay *= 1.5
+					
+func is_night_time() -> bool:
+	return is_night

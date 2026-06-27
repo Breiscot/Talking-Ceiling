@@ -3,6 +3,7 @@ extends Node
 # Segnali
 signal hunger_changed(value: float)
 signal thirst_changed(value: float)
+signal warmth_changed(value: float)
 signal status_danger
 signal status_critical
 signal status_safe
@@ -11,7 +12,9 @@ signal seal_fed(type: String)
 # Bisogni
 var hunger: float = 100.0
 var thirst: float = 100.0
+var warmth: float = 100.0
 var max_value: float = 100.0
+var max_warmth: float = 100.0
 
 @export var hunger_decay: float = 2.0
 @export var thirst_decay: float = 2.5
@@ -40,11 +43,27 @@ func _process(delta):
 	hunger -= hunger_decay * delta
 	thirst -= thirst_decay * delta
 	
+	if GameManager.is_night:
+		var campfire = GameManager.campfire
+		var fire_lit = false
+		
+		if campfire and campfire.has_method("is_fire_lit"):
+			fire_lit = campfire.is_fire_lit()
+			
+		if fire_lit:
+			warmth += 0.1 * delta
+		else:
+			warmth -= 0.5 * delta
+	else:
+		warmth += 0.2 * delta
+	
 	hunger = clamp(hunger, 0.0, max_value)
 	thirst = clamp(thirst, 0.0, max_value)
+	warmth = clamp(warmth, 0.0, max_warmth)
 	
 	hunger_changed.emit(hunger)
 	thirst_changed.emit(thirst)
+	warmth_changed.emit(warmth)
 	
 	_check_status()
 	

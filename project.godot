@@ -29,6 +29,7 @@ enabled=PackedStringArray("res://addons/godot_super-wakatime/plugin.cfg")
 
 player=""
 day_night=""
+campfire=""
 
 [input]
 

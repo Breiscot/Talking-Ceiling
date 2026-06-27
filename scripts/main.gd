@@ -2,11 +2,18 @@ extends Node3D
 
 @onready var desktop_player = $Player
 @onready var xr_origin = $XROrigin3D
+@onready var day_night_timer = $DayNightTimer
 
 func _ready():
 	await get_tree().process_frame
 	
 	GameManager.satisfaction = 0.0
+	
+	if day_night_timer:
+		day_night_timer.start_cycle()
+		print("Cycle day/night started.")
+	else:
+		print("Cycle day/night not found.")
 	
 	var xr = XRServer.find_interface("OpenXR")
 	
