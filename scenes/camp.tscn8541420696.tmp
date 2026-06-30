@@ -1,0 +1,48 @@
+[gd_scene load_steps=8 format=3 uid="uid://dl5s4ywmas6k1"]
+
+[ext_resource type="PackedScene" uid="uid://cet13gba1awy2" path="res://models/tent/tent.glb" id="2_nfbfs"]
+[ext_resource type="PackedScene" uid="uid://dypqfu2cr8plf" path="res://models/campfire/campfire.glb" id="3_c5nam"]
+[ext_resource type="Script" uid="uid://bagvdl6eh0hp2" path="res://scripts/campfire.gd" id="3_nsjlq"]
+[ext_resource type="AudioStream" uid="uid://c5sjfw6ulo5lb" path="res://audio/sfx/campfire.wav" id="4_nsjlq"]
+[ext_resource type="PackedScene" uid="uid://by6nimxmnd3e7" path="res://scenes/ui/fire_ui_3d.tscn" id="5_tafug"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_c5nam"]
+size = Vector3(1.9644394, 1.4672852, 1.928833)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_nsjlq"]
+size = Vector3(2, 2, 2)
+
+[node name="Camp" type="Node3D"]
+
+[node name="TentModel" parent="." instance=ExtResource("2_nfbfs")]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0.45955455, 0)
+
+[node name="StaticBody3D" type="StaticBody3D" parent="TentModel"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="TentModel/StaticBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.087711334, 0.23364258, -0.019348145)
+shape = SubResource("BoxShape3D_c5nam")
+
+[node name="Campfire" parent="." groups=["campfire"] instance=ExtResource("3_c5nam")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.8120155, -0.13442749, 3.2555773)
+script = ExtResource("3_nsjlq")
+
+[node name="CampfireLight" type="OmniLight3D" parent="Campfire"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.08266544, -0.17375815, -0.036057234)
+light_color = Color(1, 0.7019608, 0.047058824, 1)
+light_energy = 3.0
+omni_range = 10.0
+
+[node name="FireParticles" type="GPUParticles3D" parent="Campfire"]
+
+[node name="FireAudio" type="AudioStreamPlayer3D" parent="Campfire"]
+stream = ExtResource("4_nsjlq")
+
+[node name="InteractionArea" type="StaticBody3D" parent="Campfire"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Campfire/InteractionArea"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.064819336, -0.047150433, -0.056030273)
+shape = SubResource("BoxShape3D_nsjlq")
+
+[node name="FireUI" parent="Campfire" instance=ExtResource("5_tafug")]
+transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 0, 1.5, 0)

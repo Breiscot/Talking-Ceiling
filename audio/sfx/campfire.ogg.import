@@ -3,12 +3,12 @@
 importer="wav"
 type="AudioStreamWAV"
 uid="uid://c5sjfw6ulo5lb"
-path="res://.godot/imported/campfire.wav-bb82a7638a383a72cb6f1421763a848e.sample"
+path="res://.godot/imported/campfire.ogg-ad3a4ea84d1aa4d8554d381c7d89ae51.sample"
 
 [deps]
 
-source_file="res://audio/sfx/campfire.wav"
-dest_files=["res://.godot/imported/campfire.wav-bb82a7638a383a72cb6f1421763a848e.sample"]
+source_file="res://audio/sfx/campfire.ogg"
+dest_files=["res://.godot/imported/campfire.ogg-ad3a4ea84d1aa4d8554d381c7d89ae51.sample"]
 
 [params]
 

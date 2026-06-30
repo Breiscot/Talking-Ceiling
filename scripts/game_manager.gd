@@ -96,16 +96,29 @@ func _find_campfire():
 		var campfire_node = scene.get_node_or_null("Campfire")
 		if not campfire_node:
 			campfire_node = scene.get_node_or_null("Campfire/Campfire")
+			
 		if not campfire_node:
 			var nodes = get_tree().get_nodes_in_group("campfire")
 			if nodes.size() > 0:
 				campfire_node = nodes[0]
 				
+		if not campfire_node:
+			campfire_node = _find_campfire_recursive(scene)
+			
 		if campfire_node:
 			campfire = campfire_node
 			print("Campfire found")
 		else:
 			print("- Campfire not founded")
+			
+func _find_campfire_recursive(node: Node) -> Node:
+	for child in node.get_children():
+		if child is Node3D and (child.name == "Campfire" or child.name == "campfire"):
+			return child
+		var found = _find_campfire_recursive(child)
+		if found:
+			return found
+	return null
 		
 func add_satisfaction(type: String):
 	if is_game_over or has_won or is_paused:

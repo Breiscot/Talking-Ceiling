@@ -38,10 +38,6 @@ func _on_level_changed(level: int):
 func _process(delta):
 	if GameManager.is_paused or GameManager.is_game_over:
 		return
-		
-	# Diminuisci bisogni
-	hunger -= hunger_decay * delta
-	thirst -= thirst_decay * delta
 	
 	if GameManager.is_night:
 		var campfire = GameManager.campfire
@@ -53,9 +49,20 @@ func _process(delta):
 		if fire_lit:
 			warmth += 0.1 * delta
 		else:
-			warmth -= 0.5 * delta
+			warmth -= 10.0 * delta
 	else:
 		warmth += 0.2 * delta
+		
+	var hunger_multiplier = 1.0
+	var thirst_multiplier = 1.0
+		
+	if warmth <= 0:
+		hunger_multiplier = 10.0
+		thirst_multiplier = 10.0
+		
+	# Diminuisci bisogni
+	hunger -= hunger_decay * hunger_multiplier * delta
+	thirst -= thirst_decay * thirst_multiplier * delta
 	
 	hunger = clamp(hunger, 0.0, max_value)
 	thirst = clamp(thirst, 0.0, max_value)
@@ -69,6 +76,14 @@ func _process(delta):
 	
 func _check_status():
 	var lowest = min(hunger, thirst)
+	
+	if warmth <= 0:
+		if not is_critical:
+			is_critical = true
+			is_in_danger = true
+			status_critical.emit()
+			GameManager.trigger_aggressive_seals()
+		return
 	
 	# Critico - Foche aggressive
 	if lowest <= critical_threshold:
@@ -103,3 +118,8 @@ func give_water(amount: float):
 	thirst = clamp(thirst, 0.0, max_value)
 	seal_fed.emit("water")
 	GameManager.add_satisfaction("water")
+	
+func add_warmth(amount: float):
+	warmth += amount
+	warmth = clamp(warmth, 0.0, max_warmth)
+	warmth_changed.emit(warmth)

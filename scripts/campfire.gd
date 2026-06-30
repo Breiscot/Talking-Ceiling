@@ -29,8 +29,16 @@ var is_night: bool = false
 var is_lit: bool = false
 
 func _ready():
+	add_to_group("campfire")
+	
 	fire_level = max_fire_level
 	state = FireState.LIT
+	
+	if fire_audio:
+		fire_audio.stream = load("res://audio/sfx/campfire.ogg")
+		fire_audio.autoplay = true
+		fire_audio.finished.connect(_on_audio_finished)
+		fire_audio.play()
 	
 	_update_visuals()
 	
@@ -87,16 +95,29 @@ func add_wood(amount: float):
 		fire_level = amount
 		state = FireState.LIT
 		fire_started.emit()
+		
+		if fire_audio:
+			fire_audio.play()
+		
 		print("Fire rekindled")
 	else:
 		fire_level = clamp(fire_level + amount, 0.0, max_fire_level)
 		state = FireState.LIT
 		print("Added wood. Fire: %.0f%%" % (fire_level / max_fire_level * 100))
 		
+	if GameManager.seal_needs:
+		var warmth_increase = amount * 0.4
+		GameManager.seal_needs.add_warmth(warmth_increase)
+		print("Warmth of Ceiling increased.")
+		
 func _extinguish():
 	state = FireState.OFF
 	fire_level = 0.0
 	fire_died.emit()
+	
+	if fire_audio:
+		fire_audio.stop()
+		
 	print("The fire is out")
 	
 func _on_night_started():
@@ -113,9 +134,9 @@ func get_interaction_text() -> String:
 		return "Campfire"
 		
 	if state == FireState.OFF:
-		return "Restart the fire (you need wood)"
+		return "[E] Restart the fire (you need wood)"
 	elif inv.wood > 0:
-		return "Add wood (%d remained)" % inv.wood
+		return "[E] Add wood"
 	else:
 		return "You don't have any wood"
 		
@@ -135,9 +156,12 @@ func _find_inventory():
 		return player.get_node_or_null("PlayerInventory")
 	return null
 	
+func get_fire_level() -> float:
+	return fire_level
+	
 func is_fire_lit() -> bool:
 	return state != FireState.OFF
-	
+
 func _find_day_night_cycle():
 	var day_night = get_tree().get_first_node_in_group("day_night")
 	
@@ -150,3 +174,7 @@ func _find_day_night_cycle():
 			day_night.day_started.connect(_on_day_started)
 		else:
 			print("- Cycle day/night not found, the fire won't work well.")
+			
+func _on_audio_finished():
+	if fire_audio and state != FireState.OFF:
+		fire_audio.play()

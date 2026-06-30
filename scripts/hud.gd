@@ -89,6 +89,25 @@ func _on_warmth(value: float):
 	if warmth_bar:
 		warmth_bar.value = value
 		warmth_bar.modulate = _bar_color(value / 100.0)
+		
+		if value <= 0:
+			warning_panel.visible = true
+			warmth_label.text = "FREEZING!"
+			warning_label.modulate = Color(0.3, 0.5, 1.0)
+		
+		if value < 20.0:
+			warning_panel.visible = true
+			warning_label.text = "VERY COLD! Light the fire!"
+			warning_label.modulate = Color(0.5, 0.7, 1.0)
+			
+		elif value < 50.0:
+			warning_panel.visible = true
+			warning_label.text = "It's getting cold..."
+			warmth_bar.modulate = Color.YELLOW
+			
+		else:
+			warning_panel.visible = false
+		
 	if warmth_label:
 		warmth_label.text = "Warmth of Ceiling:"
 		
